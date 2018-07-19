@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: FogGround03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a21887e1cf80db49978ff567bcdd66c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillMaterial: {fileID: 2100000, guid: 133dc50e3de37db4eba4c8a97c7e460d, type: 2}
+  edgeMaterial: {fileID: 2100000, guid: ee5536bb92155774c9bcce9c0367f836, type: 2}
+  descriptors:
+  - applyTo: 0
+    zOffset: -.00999999978
+    yOffset: -1
+    leftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: .127929688
+      height: .21484375
+    rightCap:
+      serializedVersion: 2
+      x: .872070312
+      y: 0
+      width: .127929688
+      height: .21484375
+    body:
+    - serializedVersion: 2
+      x: .127929688
+      y: 0
+      width: .372070312
+      height: .21484375
+    - serializedVersion: 2
+      x: .5
+      y: 0
+      width: .372070312
+      height: .21484375
+    capOffset: -.550000012
+  - applyTo: 1
+    zOffset: .00999999978
+    yOffset: .560000002
+    leftCap:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 1
+      y: 0
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0
+      y: .234375
+      width: .5
+      height: .185546875
+    - serializedVersion: 2
+      x: .5
+      y: .234375
+      width: .5
+      height: .185546875
+    capOffset: .0599999987
+  - applyTo: 2
+    zOffset: .00999999978
+    yOffset: .460000008
+    leftCap:
+      serializedVersion: 2
+      x: 0
+      y: .42578125
+      width: 0
+      height: 0
+    rightCap:
+      serializedVersion: 2
+      x: 1
+      y: .42578125
+      width: 0
+      height: 0
+    body:
+    - serializedVersion: 2
+      x: 0
+      y: .430664062
+      width: .5
+      height: .185546875
+    - serializedVersion: 2
+      x: .5
+      y: .430664062
+      width: .5
+      height: .185546875
+    capOffset: -.0700000003
+  - applyTo: 3
+    zOffset: 0
+    yOffset: .319999993
+    leftCap:
+      serializedVersion: 2
+      x: 0
+      y: .765625
+      width: .0908203125
+      height: .145507812
+    rightCap:
+      serializedVersion: 2
+      x: .103515625
+      y: .765625
+      width: .078125
+      height: .145507812
+    body:
+    - serializedVersion: 2
+      x: 0
+      y: .627929688
+      width: .5
+      height: .146484375
+    - serializedVersion: 2
+      x: .5
+      y: .627929688
+      width: .5
+      height: .146484375
+    capOffset: -.75
+  isPixel: 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: descriptors.Array.data[1].body.Array.data[0].y
+      value: .234375
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: descriptors.Array.data[1].body.Array.data[0].height
+      value: .185546875
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
+  m_IsPrefabParent: 1
