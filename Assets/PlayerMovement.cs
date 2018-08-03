@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
+    Transform animationTransform;
+    [SerializeField] Animator playerAnimator;
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = false;
     public float moveForce = 15f;
@@ -24,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        animationTransform = transform.Find("Tamela");
+        playerAnimator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         // anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -105,6 +109,10 @@ public class PlayerMovement : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
+        playerAnimator.SetFloat("HorizontalMove", Mathf.Abs(h));
+        if( h > 0 || h < 0){
+            //playerAnimator.SetFloat("HorizontalMove", h);
+        }
         Vector2 currentVelocity = rb.velocity;
         currentVelocity.x = Input.GetAxisRaw("Horizontal") * maxSpeed;
         // anim.SetFloat("Speed", Mathf.Abs(h));
@@ -136,7 +144,10 @@ public class PlayerMovement : MonoBehaviour
     void Flip()
     {
         flipping = true;
-        spriteRenderer.flipX = facingRight;
+        Vector3 theScale = animationTransform.localScale;
+        theScale.x *= -1;
+        animationTransform.transform.localScale = theScale;
+        //spriteRenderer.flipX = facingRight;
 
         facingRight = !facingRight;
         GameHandler.SwitchOrbHoldPositions(facingRight);
