@@ -47,6 +47,17 @@ public class PlayerMovement : MonoBehaviour
 
         PromptPlayerHit.WaitingForScreamPrompt += SetCantMove;
         PromptPlayerHit.ScreamPromptPassed += SetYesCanMove;
+
+        FatherOrb.PickedUp += SetHoldingOrbAnimation;
+        FatherOrb.Dropped += SetNOTHoldingOrbAnimation;
+    }
+
+    void SetHoldingOrbAnimation(MonoBehaviour behavior){
+        playerAnimator.SetBool("OrbHeld", true);
+    }
+
+    void SetNOTHoldingOrbAnimation(MonoBehaviour behavior){
+        playerAnimator.SetBool("OrbHeld", false);
     }
 
     void MakePlayerStatic(MonoBehaviour ourObject)
