@@ -71,7 +71,7 @@ public class OrbFire : MonoBehaviour {
 
 	LineRenderer orbLaunchLineRenderer;  
     #endregion 
-	public IEnumerator PrimeSlingshot(GameObject whichSoul)
+	public IEnumerator PrimeSlingshot(GameObject objectToLaunch)
     {
 
         PrimingOrb();
@@ -84,7 +84,7 @@ public class OrbFire : MonoBehaviour {
         float distance = 0;
         Vector2 direction = new Vector2(0, 0);
 
-        orbLaunchLineRenderer = whichSoul.GetComponentInChildren<LineRenderer>();
+        orbLaunchLineRenderer = objectToLaunch.GetComponentInChildren<LineRenderer>();
         orbLaunchLineRenderer.enabled = true;
         FreezeTime.SlowdownTime(0.10f);
         while (true)
@@ -101,7 +101,7 @@ public class OrbFire : MonoBehaviour {
                 orbLaunchLineRenderer.enabled = false;
                 yield break;
             }
-            orbLaunchLineRenderer.SetPosition(0, whichSoul.transform.position);
+            orbLaunchLineRenderer.SetPosition(0, objectToLaunch.transform.position);
             orbLaunchLineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y)));
             yield return null;
         }
@@ -110,9 +110,9 @@ public class OrbFire : MonoBehaviour {
         Vector2 mousePos = Input.mousePosition;
         Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector2(mousePos.x, mousePos.y));
 
-        Rigidbody2D soulRigidbody = whichSoul.GetComponent<Rigidbody2D>();
-        distance = Vector2.Distance(whichSoul.transform.position, mousePositionWorld);
-        direction = (Vector2)((Vector2)whichSoul.transform.position - mousePositionWorld);
+        Rigidbody2D soulRigidbody = objectToLaunch.GetComponent<Rigidbody2D>();
+        distance = Vector2.Distance(objectToLaunch.transform.position, mousePositionWorld);
+        direction = (Vector2)((Vector2)objectToLaunch.transform.position - mousePositionWorld);
 
 
         float velocity = distance * Mathf.Sqrt(elasticity / soulRigidbody.mass);
@@ -125,7 +125,7 @@ public class OrbFire : MonoBehaviour {
         //want the collider on now so it can impact with the ui collider
         DonePrimingOrb();
         launching = true;
-        LaunchingSoul(whichSoul);
+        LaunchingSoul(objectToLaunch);
         StartCoroutine(CountdownFromLaunch());
         //   StartCoroutine(PlotPath());
     }
@@ -161,7 +161,7 @@ public class OrbFire : MonoBehaviour {
         if (Input.GetMouseButton(1) && poweredUp)
         {
             holdStartTime = Time.time;
-            StartCoroutine(PrimeSlingshot(ourSoulHandler.soulChargingUs));
+            StartCoroutine(PrimeSlingshot(this.gameObject));
 
         }
     }
