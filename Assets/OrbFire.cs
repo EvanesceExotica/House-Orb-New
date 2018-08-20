@@ -7,7 +7,6 @@ public class OrbFire : MonoBehaviour {
   //Variables
     #region
 
-    bool poweredUp;
 
     public static event Action<GameObject> SoulToBeLaunched;
     public static event Action OrbPriming;
@@ -158,7 +157,8 @@ public class OrbFire : MonoBehaviour {
     }
     void Update()
     {
-        if (Input.GetMouseButton(1) && poweredUp)
+
+        if (Input.GetMouseButton(1))
         {
             holdStartTime = Time.time;
             StartCoroutine(PrimeSlingshot(this.gameObject));
