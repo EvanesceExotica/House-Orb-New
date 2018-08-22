@@ -10,41 +10,64 @@ public class RotateAround : MonoBehaviour
     List<GameObject> lights = new List<GameObject>();
     // Use this for initialization
     List<ParticleSystems> lightParticles = new List<ParticleSystems>();
+
+    List<TrailRenderer> trailRenderers = new List<TrailRenderer>();
     void Awake()
     {
-		StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor; 
-        StarScream.ScreamBegun += RotateSoulsOutWrapper; 
+        StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
+        StarScream.ScreamBegun += RotateSoulsOutWrapper;
         foreach (Transform child in transform)
         {
-            childLocations.Add(child);
+            if (child.tag == "Location")
+            {
+                childLocations.Add(child);
+            }
+            else if (child.tag == "Soul")
+            {
+                lights.Add(child.gameObject);
+            }
         }
-        foreach(GameObject go in lights){
+
+        foreach (GameObject go in lights)
+        {
+            trailRenderers.AddRange(go.GetComponentsInChildren<TrailRenderer>());
             lightParticles.AddRange(go.GetComponentsInChildren<ParticleSystems>());
         }
-            
+        foreach (TrailRenderer tr in trailRenderers)
+        {
+            tr.time = 0f;
+        }
+
     }
     void Start()
     {
 
     }
 
-    void RotateSoulsOutWrapper(){
+    void RotateSoulsOutWrapper()
+    {
         StartCoroutine(RotateSoulsOut());
     }
 
-    void RotateSoulsInWrapper(){
+    void RotateSoulsInWrapper()
+    {
         StartCoroutine(RotateSoulsIn());
     }
 
     public IEnumerator RotateSoulsOut()
     {
-        foreach(ParticleSystems particles in lightParticles){
+        foreach (ParticleSystems particles in lightParticles)
+        {
             particles.Play();
+        }
+        foreach (TrailRenderer tr in trailRenderers)
+        {
+            tr.time = 1.0f;
         }
         float distance = Vector2.Distance(lights[0].transform.position, childLocations[0].transform.position);
         while (distance > 0.5f)
         {
-			// move them out away from center
+            // move them out away from center
             for (int i = 0; i < childLocations.Count; i++)
             {
 
@@ -57,11 +80,14 @@ public class RotateAround : MonoBehaviour
 
     public IEnumerator RotateSoulsIn()
     {
-        
+        foreach (TrailRenderer tr in trailRenderers)
+        {
+            tr.time = 0f;
+        }
         float distance = Vector2.Distance(lights[0].transform.position, transform.position);
         while (distance > 0.5f)
         {
-			//move them toward center
+            //move them toward center
             for (int i = 0; i < childLocations.Count; i++)
             {
 
@@ -69,13 +95,14 @@ public class RotateAround : MonoBehaviour
             }
             yield return null;
         }
-        foreach(ParticleSystems particles in lightParticles){
+        foreach (ParticleSystems particles in lightParticles)
+        {
             particles.Stop();
         }
 
     }
 
-    void ChangeSoulColor(int)
+    void ChangeSoulColor(int something)
     {
 
 
@@ -83,6 +110,14 @@ public class RotateAround : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            RotateSoulsOutWrapper();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            RotateSoulsInWrapper();
+        }
         transform.Rotate(0, 0, -50 * Time.deltaTime); //rotates 50 degrees per second around z axis
 
     }

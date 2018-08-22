@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MirzaBeig.ParticleSystems;
+using System.Linq;
 public class OrbFire : MonoBehaviour {
 
   //Variables
@@ -69,21 +71,26 @@ public class OrbFire : MonoBehaviour {
 #region
 
 	LineRenderer orbLaunchLineRenderer;  
-    #endregion 
-	public IEnumerator PrimeSlingshot(GameObject objectToLaunch)
-    {
+    Rigidbody2D soulRigidbody;
 
+    ParticleSystems soulParticleSystems;
+    #endregion 
+
+    void Awake(){
+        
+        orbLaunchLineRenderer = GetComponent<LineRenderer>();
+        soulRigidbody = GetComponent<Rigidbody2D>();
+        soulParticleSystems = GetComponentInChildren<ParticleSystems>();
+    }
+	public IEnumerator PrimeSlingshot()
+    {
+        soulParticleSystems.Play();
         PrimingOrb();
-        if (!zoomed)
-        {
-          //  ZoomOnPlayer();
-        }
         priming = true;
         Vector2 mouseStartPosition = Input.mousePosition;
         float distance = 0;
         Vector2 direction = new Vector2(0, 0);
 
-        orbLaunchLineRenderer = objectToLaunch.GetComponentInChildren<LineRenderer>();
         orbLaunchLineRenderer.enabled = true;
         FreezeTime.SlowdownTime(0.10f);
         while (true)
@@ -100,7 +107,7 @@ public class OrbFire : MonoBehaviour {
                 orbLaunchLineRenderer.enabled = false;
                 yield break;
             }
-            orbLaunchLineRenderer.SetPosition(0, objectToLaunch.transform.position);
+            orbLaunchLineRenderer.SetPosition(0, transform.position);
             orbLaunchLineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y)));
             yield return null;
         }
@@ -109,9 +116,8 @@ public class OrbFire : MonoBehaviour {
         Vector2 mousePos = Input.mousePosition;
         Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector2(mousePos.x, mousePos.y));
 
-        Rigidbody2D soulRigidbody = objectToLaunch.GetComponent<Rigidbody2D>();
-        distance = Vector2.Distance(objectToLaunch.transform.position, mousePositionWorld);
-        direction = (Vector2)((Vector2)objectToLaunch.transform.position - mousePositionWorld);
+        distance = Vector2.Distance(transform.position, mousePositionWorld);
+        direction = (Vector2)((Vector2)transform.position - mousePositionWorld);
 
 
         float velocity = distance * Mathf.Sqrt(elasticity / soulRigidbody.mass);
@@ -124,7 +130,7 @@ public class OrbFire : MonoBehaviour {
         //want the collider on now so it can impact with the ui collider
         DonePrimingOrb();
         launching = true;
-        LaunchingSoul(objectToLaunch);
+        LaunchingSoul(this.gameObject);
         StartCoroutine(CountdownFromLaunch());
         //   StartCoroutine(PlotPath());
     }
@@ -137,6 +143,7 @@ public class OrbFire : MonoBehaviour {
        // ZoomOut();
         launching = false;
         NotLaunchingSoul();
+        soulParticleSystems.Stop();
     }
     IEnumerator CountdownFromLaunch()
     {
@@ -161,7 +168,7 @@ public class OrbFire : MonoBehaviour {
         if (Input.GetMouseButton(1))
         {
             holdStartTime = Time.time;
-            StartCoroutine(PrimeSlingshot(this.gameObject));
+            StartCoroutine(PrimeSlingshot());
 
         }
     }
