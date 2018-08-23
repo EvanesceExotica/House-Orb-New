@@ -79,11 +79,13 @@ public class OrbFire : MonoBehaviour {
     void Awake(){
         
         orbLaunchLineRenderer = GetComponent<LineRenderer>();
+        orbLaunchLineRenderer.enabled = false;
         soulRigidbody = GetComponent<Rigidbody2D>();
         soulParticleSystems = GetComponentInChildren<ParticleSystems>();
     }
 	public IEnumerator PrimeSlingshot()
     {
+
         soulParticleSystems.Play();
         PrimingOrb();
         priming = true;
@@ -95,7 +97,7 @@ public class OrbFire : MonoBehaviour {
         FreezeTime.SlowdownTime(0.10f);
         while (true)
         {
-
+            Debug.Log("Priming");
             if (Input.GetMouseButtonUp(1))
             {
                 break;
@@ -107,14 +109,17 @@ public class OrbFire : MonoBehaviour {
                 orbLaunchLineRenderer.enabled = false;
                 yield break;
             }
-            orbLaunchLineRenderer.SetPosition(0, transform.position);
-            orbLaunchLineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y)));
+            Vector3 transformPosition = new Vector3(transform.position.x, transform.position.y, 0);
+            orbLaunchLineRenderer.SetPosition(0, transformPosition);
+            Vector3 screenToWorldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+            screenToWorldPoint.z = 0;
+            orbLaunchLineRenderer.SetPosition(1, screenToWorldPoint);
             yield return null;
         }
         orbLaunchLineRenderer.enabled = false;
 
         Vector2 mousePos = Input.mousePosition;
-        Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector2(mousePos.x, mousePos.y));
+        Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
 
         distance = Vector2.Distance(transform.position, mousePositionWorld);
         direction = (Vector2)((Vector2)transform.position - mousePositionWorld);
@@ -154,7 +159,11 @@ public class OrbFire : MonoBehaviour {
 
   
 
-   
+   void OnTriggerEnter2D(Collider2D hit){
+       if(hit.tag == "Soul"){
+           
+       }
+   }
 
     void ReturnToPlayer()
     {
