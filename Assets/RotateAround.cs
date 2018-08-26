@@ -7,15 +7,22 @@ public class RotateAround : MonoBehaviour
 {
 
     List<Transform> childLocations = new List<Transform>();
-    List<GameObject> lights = new List<GameObject>();
+    [SerializeField] List<GameObject> lights = new List<GameObject>();
     // Use this for initialization
     List<ParticleSystems> lightParticles = new List<ParticleSystems>();
 
+    [SerializeField] List<Soul> souls = new List<Soul>();
     List<TrailRenderer> trailRenderers = new List<TrailRenderer>();
+
+    GameObject orbFire;
     void Awake()
     {
-        StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
+        //StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
+       orbFire = transform.parent.GetComponentInChildren<OrbFire>().gameObject; 
         StarScream.ScreamBegun += RotateSoulsOutWrapper;
+        Room.RoomWithPlayerHit += this.ChangeSoulColor;
+        FatherOrb.Dropped += this.RotateSoulsInWrapper;
+       // AutoRepel.AutoRepelTriggered += AutoRepelActivated;
         foreach (Transform child in transform)
         {
             if (child.tag == "Location")
@@ -25,13 +32,16 @@ public class RotateAround : MonoBehaviour
             else if (child.tag == "Soul")
             {
                 lights.Add(child.gameObject);
+                souls.Add(child.GetComponent<Soul>());
             }
         }
 
         foreach (GameObject go in lights)
         {
             trailRenderers.AddRange(go.GetComponentsInChildren<TrailRenderer>());
-            lightParticles.AddRange(go.GetComponentsInChildren<ParticleSystems>());
+            ParticleSystems[] particleSystems = go.GetComponentsInChildren<ParticleSystems>();
+            lightParticles.Add(particleSystems[0]);
+            //lightParticles.AddRange(go.GetComponentsInChildren<ParticleSystems>());
         }
         foreach (TrailRenderer tr in trailRenderers)
         {
@@ -54,11 +64,15 @@ public class RotateAround : MonoBehaviour
         StartCoroutine(RotateSoulsIn());
     }
 
+    void RotateSoulsInWrapper(MonoBehaviour mono){
+        StartCoroutine(RotateSoulsIn());
+    }
+
     public IEnumerator RotateSoulsOut()
     {
-        foreach (ParticleSystems particles in lightParticles)
-        {
-            particles.Play();
+        orbFire.SetActive(true);
+        foreach(Soul soul in souls){
+            soul.PlayDefaultParticleSystem();
         }
         foreach (TrailRenderer tr in trailRenderers)
         {
@@ -102,14 +116,19 @@ public class RotateAround : MonoBehaviour
 
     }
 
-    void ChangeSoulColor(int something)
+    void ChangeSoulColor(bool something)
     {
-
+        int randomIndex = UnityEngine.Random.Range(0, lights.Count);
+        Soul chosenSoul = lights[randomIndex].GetComponent<Soul>();
+        chosenSoul.Chosen();
 
     }
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.C)){
+            ChangeSoulColor(true);
+        }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             RotateSoulsOutWrapper();

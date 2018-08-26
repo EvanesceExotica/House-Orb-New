@@ -74,6 +74,8 @@ public class OrbFire : MonoBehaviour {
     Rigidbody2D soulRigidbody;
 
     ParticleSystems soulParticleSystems;
+
+    Collider2D ourCollider;
     #endregion 
 
     void Awake(){
@@ -82,6 +84,8 @@ public class OrbFire : MonoBehaviour {
         orbLaunchLineRenderer.enabled = false;
         soulRigidbody = GetComponent<Rigidbody2D>();
         soulParticleSystems = GetComponentInChildren<ParticleSystems>();
+        ourCollider = GetComponent<Collider2D>();
+        ourCollider.enabled = false;
     }
 	public IEnumerator PrimeSlingshot()
     {
@@ -94,18 +98,19 @@ public class OrbFire : MonoBehaviour {
         Vector2 direction = new Vector2(0, 0);
 
         orbLaunchLineRenderer.enabled = true;
+        ourCollider.enabled = true;
         FreezeTime.SlowdownTime(0.10f);
         while (true)
         {
             Debug.Log("Priming");
-            if (Input.GetMouseButtonUp(1))
+            if (Input.GetMouseButtonUp(0))
             {
                 break;
             }
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(1))
             {
                 //right click to cancel
-                stillHeld = true;
+                //stillHeld = true;
                 orbLaunchLineRenderer.enabled = false;
                 yield break;
             }
@@ -148,22 +153,21 @@ public class OrbFire : MonoBehaviour {
        // ZoomOut();
         launching = false;
         NotLaunchingSoul();
-        soulParticleSystems.Stop();
+        gameObject.SetActive(false);
     }
     IEnumerator CountdownFromLaunch()
     {
 
         yield return new WaitForSeconds(0.5f * 0.1f);
+        soulParticleSystems.Stop();
         ResetTimeAndSetLaunchToFalse();
     }
 
   
-
-   void OnTriggerEnter2D(Collider2D hit){
-       if(hit.tag == "Soul"){
-           
-       }
-   }
+    public void Dissolve(){
+        soulParticleSystems.Stop();
+    }
+   
 
     void ReturnToPlayer()
     {
@@ -174,7 +178,7 @@ public class OrbFire : MonoBehaviour {
     void Update()
     {
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0))
         {
             holdStartTime = Time.time;
             StartCoroutine(PrimeSlingshot());
