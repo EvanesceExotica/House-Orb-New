@@ -8,6 +8,8 @@ using System;
 using MirzaBeig.ParticleSystems;
 public class PromptPlayerHit : MonoBehaviour
 {
+
+
     public static event Action PlayerParried;
 
     public static event Action AutoRepelUsed;
@@ -20,6 +22,13 @@ public class PromptPlayerHit : MonoBehaviour
         if (WaitingForScreamPrompt != null)
         {
             WaitingForScreamPrompt(this);
+        }
+    }
+    public static event Action<MonoBehaviour> ScreamPrompted;
+
+    public void ScreamPromptedWrapper(){
+        if(ScreamPrompted != null){
+            ScreamPrompted(this);
         }
     }
     public static event Action<MonoBehaviour> ScreamPromptPassed;
@@ -53,7 +62,7 @@ public class PromptPlayerHit : MonoBehaviour
         canAutoRepel = true;
     }
 
-    void AutoRepelUsedWrapper()
+    public void AutoRepelUsedWrapper()
     {
 
         canAutoRepel = false;
@@ -127,7 +136,15 @@ public class PromptPlayerHit : MonoBehaviour
     {
         if (orbHeld)
         {
-            StartCoroutine(PromptPlayerHitCoroutine());
+            if (canAutoRepel)
+            {
+                PlayerParriedScream();
+                AutoRepelUsedWrapper();
+            }
+            else{
+                ScreamPromptedWrapper();
+            }
+            //StartCoroutine(PromptPlayerHitCoroutine());
         }
         else
         {
@@ -148,7 +165,7 @@ public class PromptPlayerHit : MonoBehaviour
         ourCanvasGroup.DOFade(0, 0.5f);
     }
 
-    void PlayerMissedOrFailed()
+    public void PlayerMissedOrFailed()
     {
         if (PlayerFailed != null)
         {
@@ -157,7 +174,7 @@ public class PromptPlayerHit : MonoBehaviour
         Debug.Log("Player MISSED OR FAILED");
     }
 
-    void PlayerParriedScream()
+    public void PlayerParriedScream()
     {
         Debug.Log("SCREAM PARRIED");
         if (PlayerParried != null)

@@ -18,10 +18,13 @@ public class RotateAround : MonoBehaviour
     void Awake()
     {
         //StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
-       orbFire = transform.parent.GetComponentInChildren<OrbFire>().gameObject; 
-        StarScream.ScreamBegun += RotateSoulsOutWrapper;
-        Room.RoomWithPlayerHit += this.ChangeSoulColor;
+        orbFire = transform.parent.Find("LaunchedOrb").gameObject; 
+        StarScream.ScreamHitRoomAdjacent += RotateSoulsOutWrapper;
+        //Room.RoomWithPlayerHit += this.ChangeSoulColor;
         FatherOrb.Dropped += this.RotateSoulsInWrapper;
+        OrbFire.WrongOrNoSoulChosen += DisperseSouls;
+        OrbFire.CorrectSoulChosen += DisperseSouls;
+        PromptPlayerHit.ScreamPrompted += ChangeSoulColor;
        // AutoRepel.AutoRepelTriggered += AutoRepelActivated;
         foreach (Transform child in transform)
         {
@@ -59,6 +62,11 @@ public class RotateAround : MonoBehaviour
         StartCoroutine(RotateSoulsOut());
     }
 
+    void RotateSoulsOutWrapper(MonoBehaviour mono)
+    {
+        StartCoroutine(RotateSoulsOut());
+    }
+
     void RotateSoulsInWrapper()
     {
         StartCoroutine(RotateSoulsIn());
@@ -70,7 +78,6 @@ public class RotateAround : MonoBehaviour
 
     public IEnumerator RotateSoulsOut()
     {
-        orbFire.SetActive(true);
         foreach(Soul soul in souls){
             soul.PlayDefaultParticleSystem();
         }
@@ -94,6 +101,7 @@ public class RotateAround : MonoBehaviour
 
     public IEnumerator RotateSoulsIn()
     {
+        orbFire.SetActive(false);
         foreach (TrailRenderer tr in trailRenderers)
         {
             tr.time = 0f;
@@ -116,18 +124,32 @@ public class RotateAround : MonoBehaviour
 
     }
 
-    void ChangeSoulColor(bool something)
+    void ChangeSoulColor(MonoBehaviour something)
     {
         int randomIndex = UnityEngine.Random.Range(0, lights.Count);
         Soul chosenSoul = lights[randomIndex].GetComponent<Soul>();
         chosenSoul.Chosen();
+        orbFire.SetActive(true);
 
+    }
+
+    void DisperseSouls(){
+        Debug.Log("Soul being dispersed");
+        foreach(Soul soul in souls){
+            if(soul.chosen == false){
+                soul.StopNormalParticleSystem();
+                
+            }
+        }
+        foreach(TrailRenderer trenderer in trailRenderers){
+            trenderer.time = 0;
+        }
     }
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.C)){
-            ChangeSoulColor(true);
+            ChangeSoulColor(this);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {

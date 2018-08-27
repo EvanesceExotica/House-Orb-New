@@ -4,20 +4,35 @@ using UnityEngine;
 using System;
 using MirzaBeig.ParticleSystems;
 using System.Linq;
-public class OrbFire : MonoBehaviour {
+public class OrbFire : MonoBehaviour
+{
 
-  //Variables
+    //Variables
     #region
 
+    public static event Action CorrectSoulChosen;
 
+    public void CorrectSoulChosenWrapper(){
+        if(CorrectSoulChosen != null){
+            CorrectSoulChosen();
+        }
+    }
+
+    public static event Action WrongOrNoSoulChosen;
+
+    public void WrongOrNoSoulChosenWrapper(){
+        if(WrongOrNoSoulChosen != null){
+            WrongOrNoSoulChosen();
+        }
+    }
     public static event Action<GameObject> SoulToBeLaunched;
     public static event Action OrbPriming;
     public static event Action DonePriming;
     bool zoomed;
     #endregion
 
-//Actions and Action methods
-#region
+    //Actions and Action methods
+    #region
     public void PrimingOrb()
     {
         if (OrbPriming != null)
@@ -51,7 +66,7 @@ public class OrbFire : MonoBehaviour {
     }
     #endregion
 
- 
+
 
     void Start()
     {
@@ -67,10 +82,10 @@ public class OrbFire : MonoBehaviour {
     bool stillHeld = false;
     float holdStartTime;//
     Rigidbody2D rb;
-//References to other scripts
-#region
+    //References to other scripts
+    #region
 
-	LineRenderer orbLaunchLineRenderer;  
+    LineRenderer orbLaunchLineRenderer;
     Rigidbody2D soulRigidbody;
 
     ParticleSystems soulParticleSystems;
@@ -78,8 +93,9 @@ public class OrbFire : MonoBehaviour {
     Collider2D ourCollider;
     #endregion 
 
-    void Awake(){
-        
+    void Awake()
+    {
+
         orbLaunchLineRenderer = GetComponent<LineRenderer>();
         orbLaunchLineRenderer.enabled = false;
         soulRigidbody = GetComponent<Rigidbody2D>();
@@ -87,7 +103,7 @@ public class OrbFire : MonoBehaviour {
         ourCollider = GetComponent<Collider2D>();
         ourCollider.enabled = false;
     }
-	public IEnumerator PrimeSlingshot()
+    public IEnumerator PrimeSlingshot()
     {
 
         soulParticleSystems.Play();
@@ -100,7 +116,7 @@ public class OrbFire : MonoBehaviour {
         orbLaunchLineRenderer.enabled = true;
         ourCollider.enabled = true;
         FreezeTime.SlowdownTime(0.10f);
-        while (true)
+        while (Time.time < holdStartTime + 1)
         {
             Debug.Log("Priming");
             if (Input.GetMouseButtonUp(0))
@@ -144,30 +160,47 @@ public class OrbFire : MonoBehaviour {
         StartCoroutine(CountdownFromLaunch());
         //   StartCoroutine(PlotPath());
     }
-	// Use this for initialization
+    // Use this for initialization
 
-	
+
     void ResetTimeAndSetLaunchToFalse()
     {
         FreezeTime.StartTimeAgain();
-       // ZoomOut();
+        // ZoomOut();
         launching = false;
         NotLaunchingSoul();
+        GameHandler.prompter.PlayerMissedOrFailed();
+        WrongOrNoSoulChosenWrapper();
         gameObject.SetActive(false);
     }
     IEnumerator CountdownFromLaunch()
     {
-
-        yield return new WaitForSeconds(0.5f * 0.1f);
+        FreezeTime.StartTimeAgain();
+        yield return new WaitForSeconds(0.5f);
         soulParticleSystems.Stop();
         ResetTimeAndSetLaunchToFalse();
     }
 
-  
-    public void Dissolve(){
+
+    public void DetermineWhichSoulWasHit(Soul soul)
+    {
+       Dissolve(); 
+        if (soul.chosen)
+        {
+            GameHandler.prompter.PlayerParriedScream();
+            CorrectSoulChosenWrapper();
+        }
+
+        else{
+            GameHandler.prompter.PlayerMissedOrFailed();
+            WrongOrNoSoulChosenWrapper();
+        }
+    }
+    void Dissolve()
+    {
         soulParticleSystems.Stop();
     }
-   
+
 
     void ReturnToPlayer()
     {
@@ -185,5 +218,5 @@ public class OrbFire : MonoBehaviour {
 
         }
     }
-	
+
 }

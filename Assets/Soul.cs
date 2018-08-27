@@ -21,13 +21,13 @@ public class Soul : MonoBehaviour
 
     }
 
-    bool chosen;
+    public bool chosen;
 
     void BeCollidedWith()
     {
         if (chosen)
         {
-            defaultParticleSystems.Stop();
+            chosenBurstParticleSystems.Stop();
             collisionParticleSystems.Play();
         }
         else
@@ -71,7 +71,7 @@ public class Soul : MonoBehaviour
         OrbFire orbFire = hit.GetComponent<OrbFire>();
         if(orbFire != null){
             BeCollidedWith();
-            orbFire.Dissolve();
+            orbFire.DetermineWhichSoulWasHit(this);
 
         }
     }

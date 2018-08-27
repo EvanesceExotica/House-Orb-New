@@ -6,6 +6,7 @@ using TMPro;
 public class GameHandler : MonoBehaviour
 {
 
+    public static PromptPlayerHit prompter;
     public static ScreamFollowObject screamFollowObject;
     public static RoomManager roomManager;
     public static LayerMask defaultPlayerLayer;
@@ -61,6 +62,7 @@ public class GameHandler : MonoBehaviour
         roomManager = GameObject.Find("Managers").GetComponent<RoomManager>();
         playerGO = GameObject.Find("Player");
         player = playerGO.GetComponent<Player>();
+       prompter = player.GetComponentInChildren<PromptPlayerHit>();
         defaultPlayerLayer = playerGO.layer;
         fatherOrbGO = GameObject.Find("FatherOrb");
         fatherOrb = fatherOrbGO.GetComponent<FatherOrb>();

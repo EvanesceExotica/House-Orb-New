@@ -73,7 +73,7 @@ public class OrbEffects : MonoBehaviour
         Memory.PrevSconceTeleportGiven += StartPrevSconceTeleportParticleSystem;
         Memory.HintGiven += StartHintParticleSystem;
 
-        PromptPlayerHit.PlayerParried += Parry;
+        //PromptPlayerHit.PlayerParried += Parry;
         PromptPlayerHit.AutoRepelUsed += Parry;
 
         FatherOrb.Fizzing += StartFizz;
@@ -83,9 +83,9 @@ public class OrbEffects : MonoBehaviour
         FatherOrb.OrbRefreshed += StopFizz;
         FatherOrb.Dropped += StopFizz;
 
-        PromptPlayerHit.PlayerFailed += PlayFailureEffect;
+        //PromptPlayerHit.PlayerFailed += PlayFailureEffect;
 
-        Room.RoomWithPlayerHit += SetParryParticlesToDoubleSpeed;
+        //Room.RoomWithPlayerHit += SetParryParticlesToDoubleSpeed;
 
         parryParticles.AddRange(parryParticlesGO.GetComponentsInChildren<ParticleSystems>());
         parryParticles.Add(baseParticleSystem);
