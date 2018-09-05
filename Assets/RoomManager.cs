@@ -157,6 +157,16 @@ public class RoomManager : MonoBehaviour
         numberOfRooms = roomList.Count;
     }
 
+    void OnDisable(){
+        
+        foreach(Room room in roomList){
+            room.PlayerEnteredRoom -= SetPlayerCurrentRoom;
+            room.PlayerEnteredRoom -= AddScentToRoomsEntered;
+            room.EnemyEntered -= SetEnemyCurrentRoom;
+
+        }
+    }
+
 
     void SetAdjacentRooms(Room room){
         List<Room> adjacentRooms = new List<Room>();

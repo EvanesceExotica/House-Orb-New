@@ -12,16 +12,20 @@ public class OrbFire : MonoBehaviour
 
     public static event Action CorrectSoulChosen;
 
-    public void CorrectSoulChosenWrapper(){
-        if(CorrectSoulChosen != null){
+    public void CorrectSoulChosenWrapper()
+    {
+        if (CorrectSoulChosen != null)
+        {
             CorrectSoulChosen();
         }
     }
 
     public static event Action WrongOrNoSoulChosen;
 
-    public void WrongOrNoSoulChosenWrapper(){
-        if(WrongOrNoSoulChosen != null){
+    public void WrongOrNoSoulChosenWrapper()
+    {
+        if (WrongOrNoSoulChosen != null)
+        {
             WrongOrNoSoulChosen();
         }
     }
@@ -166,33 +170,54 @@ public class OrbFire : MonoBehaviour
     void ResetTimeAndSetLaunchToFalse()
     {
         FreezeTime.StartTimeAgain();
-        // ZoomOut();
+        soulParticleSystems.Stop();
         launching = false;
         NotLaunchingSoul();
-        GameHandler.prompter.PlayerMissedOrFailed();
-        WrongOrNoSoulChosenWrapper();
         gameObject.SetActive(false);
     }
     IEnumerator CountdownFromLaunch()
     {
-        FreezeTime.StartTimeAgain();
-        yield return new WaitForSeconds(0.5f);
-        soulParticleSystems.Stop();
+        //coundown from the time that was launched to see if the launched orb hits something while this is happening
+        float startTime = Time.time;
+        while (Time.time < startTime + 0.5f)
+        {
+            if (soulHit)
+            {
+                soulHit = false;
+                ResetTimeAndSetLaunchToFalse();
+                //if the soul is hit, reset things -- the actions are taken care of in the "DetermineWhichSoulWasHit" method
+                yield break;
+            }
+            yield return null;
+        }
+        //if the time runs out and you miss hitting anything with the orb, reset, but also send the WrongOrNoSoulChosen action since you didn't hit anything
+        WrongOrNoSoulChosenWrapper();
         ResetTimeAndSetLaunchToFalse();
+        //yield return new WaitForSeconds(0.5f);
+        // FreezeTime.StartTimeAgain();
+        //soulParticleSystems.Stop();
     }
 
-
+    bool soulHit = false;
     public void DetermineWhichSoulWasHit(Soul soul)
     {
-       Dissolve(); 
+        Dissolve();
+        soulHit = true;
+        FreezeTime.StartTimeAgain();
         if (soul.chosen)
         {
-            GameHandler.prompter.PlayerParriedScream();
+            //if the soul that was hit was the chosen soul
+            Debug.Log("<color=cyan>Correct soul chosen</color>");
+          //  FreezeTime.StartTimeAgain();
+            GameHandler.Instance().prompter.PlayerParriedScream();
             CorrectSoulChosenWrapper();
         }
 
-        else{
-            GameHandler.prompter.PlayerMissedOrFailed();
+        else
+        {
+            Debug.Log("<color=red>wrong soul chosen</color>");
+          //  FreezeTime.StartTimeAgain();
+            GameHandler.Instance().prompter.PlayerMissedOrFailed();
             WrongOrNoSoulChosenWrapper();
         }
     }

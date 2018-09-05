@@ -39,9 +39,9 @@ public class ScreamFollowObject : MonoBehaviour
 
         while (Time.time < startTime + duration)
         {
-            if ((room = GameHandler.roomManager.GetPlayerCurrentRoom()))
+            if ((room = GameHandler.Instance().roomManager.GetPlayerCurrentRoom()))
             {
-                if (Vector2.Distance(GameHandler.playerGO.transform.position, transform.position) <= 1.0f)
+                if (Vector2.Distance(GameHandler.Instance().playerGO.transform.position, transform.position) <= 1.0f)
                 {
                     //the particles will either attach to the player or disperse on their own time
                     yield break;

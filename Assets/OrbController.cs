@@ -56,6 +56,14 @@ public class OrbController : MonoBehaviour
 
     }
 
+    void OnDisable(){
+        FatherOrb.PickedUp -= SetCanBeChanneled;
+        FatherOrb.Dropped -= SetCanNOTBeChanneled;
+        Sconce.OrbInSconce -= SetCanNOTBeChanneled;
+        HiddenSconce.SconceRevealed -= StopOrbBeingChanneled;
+
+    }
+
     void SetCanBeChanneled(MonoBehaviour ourObject)
     {
 
@@ -75,8 +83,8 @@ public class OrbController : MonoBehaviour
     void StartOrbBeingChanelled()
     {
         channelingOrb = true;
-        GameHandler.proCamera.RemoveCameraTarget(GameHandler.playerGO.transform);
-        GameHandler.proCamera.AddCameraTarget(GameHandler.fatherOrbGO.transform);
+        GameHandler.Instance().proCamera.RemoveCameraTarget(GameHandler.Instance().playerGO.transform);
+        GameHandler.Instance().proCamera.AddCameraTarget(GameHandler.Instance().fatherOrbGO.transform);
         orb.SetOrbBeingChanneled();
         ChannelingOrbWrapper(this);
         orbRigidBody.bodyType = RigidbodyType2D.Dynamic;
@@ -88,12 +96,12 @@ public class OrbController : MonoBehaviour
     {
 
         channelingOrb = false;
-        GameHandler.proCamera.RemoveCameraTarget(GameHandler.fatherOrbGO.transform);
-        GameHandler.proCamera.AddCameraTarget(GameHandler.playerGO.transform);
+        GameHandler.Instance().proCamera.RemoveCameraTarget(GameHandler.Instance().fatherOrbGO.transform);
+        GameHandler.Instance().proCamera.AddCameraTarget(GameHandler.Instance().playerGO.transform);
         //todo: whether or not this is carried or handled depends on whether or not
         //todo: maybe the orb begins screaming when outside of sconce and hand for too long
         orbRigidBody.velocity = Vector2.zero;
-        if (GameHandler.fatherOrb.heldStatus != FatherOrb.HeldStatuses.InSconce)
+        if (GameHandler.Instance().fatherOrb.heldStatus != FatherOrb.HeldStatuses.InSconce)
         {
             //if it's not in the sconce, then we manually recalled it
             ManuallyStoppedChannelingOrbWrapper(this);
@@ -171,7 +179,7 @@ public class OrbController : MonoBehaviour
 
     void ReturnToPlayer()
     {
-        orb.MoveUsWrapper(transform.position, GameHandler.fatherOrbHoldTransform.position, GameHandler.player);
+        orb.MoveUsWrapper(transform.position, GameHandler.Instance().fatherOrbHoldTransform.position, GameHandler.Instance().player);
     }
 
     void Start()

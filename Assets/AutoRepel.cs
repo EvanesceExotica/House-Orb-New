@@ -14,6 +14,10 @@ public class AutoRepel : MonoBehaviour {
 		Memory.AutoReflectGiven += ActivateAutoRepel;
 		PromptPlayerHit.AutoRepelUsed += DeactivateAutoRepel;
 	}
+	void OnDisable(){
+		Memory.AutoReflectGiven -= ActivateAutoRepel;
+		PromptPlayerHit.AutoRepelUsed -= DeactivateAutoRepel;
+	}
 	public bool activated;
 
 	public static event Action AutoRepelTriggered; 

@@ -59,6 +59,14 @@ public class Monster : MonoBehaviour
         //Memory.LookingAtMemory += PauseProgression;
     }
 
+    void OnDisable(){
+         HidingSpace.PlayerHiding -= PlayerHid;
+        HidingSpace.PlayerNoLongerHiding -= PlayerCameOutOfHiding;
+        HidingSpace.BreathedTooLoud -= HeardPlayerBreathing;
+        PromptPlayerHit.PlayerFailed -= HuntPlayerWrapper;
+        StarScream.ScreamHitPlayerCurrentRoom -= SetStarScreamDirection;
+        FatherOrb.OrbScream -= HurryToRoomOfScreamWrapper;
+    }
     bool pause = false;
     void PauseProgression(MonoBehaviour mono){
         pause = true;
@@ -322,7 +330,7 @@ public class Monster : MonoBehaviour
         {
             //go back to moving between rooms like normal
             BackToSearchingWrapper();
-            StartCoroutine(MoveBetweenRooms(GameHandler.roomManager.GetEnemyCurrentRoomIndex()));
+            StartCoroutine(MoveBetweenRooms(GameHandler.Instance().roomManager.GetEnemyCurrentRoomIndex()));
         }
     }
     float hidingWaitDuration = 10;

@@ -12,6 +12,13 @@ public class FadeOutSpriteGroup : MonoBehaviour {
 		PromptPlayerHit.PlayerFailed += ReturnSpritesToFull;
 		StarScream.ScreamHitRoomAdjacent += FadeAllSpritesInGroup;
 	}
+
+	void OnDisable(){
+
+		PromptPlayerHit.PlayerParried -= ReturnSpritesToFull;
+		PromptPlayerHit.PlayerFailed -= ReturnSpritesToFull;
+		StarScream.ScreamHitRoomAdjacent -= FadeAllSpritesInGroup;
+	}
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(InitializeSpecialObjects());

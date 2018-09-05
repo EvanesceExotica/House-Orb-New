@@ -11,23 +11,31 @@ public class SwitchCameras : MonoBehaviour {
 	public LayerMask OrbFollowLayerMask;
 
 	void Awake(){
-		NormalLayerMask = GameHandler.mainCamera.cullingMask; 
+		NormalLayerMask = GameHandler.Instance().mainCamera.cullingMask; 
 		HidingSpace.PlayerHiding += ChangeCameraToShowHidingPlace;
 		HidingSpace.PlayerNoLongerHiding += ChangeCameraToDefault;
 		ReturnPlayerToLastSconce.ReturningToLastSconceWithPlayer += ChangeCameraToShowOrbOnly;
 		ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer += ChangeCameraToDefault;
 	}
+
+	void OnDisable(){
+		HidingSpace.PlayerHiding -= ChangeCameraToShowHidingPlace;
+		HidingSpace.PlayerNoLongerHiding -= ChangeCameraToDefault;
+		ReturnPlayerToLastSconce.ReturningToLastSconceWithPlayer -= ChangeCameraToShowOrbOnly;
+		ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= ChangeCameraToDefault;
+
+	}
 	void ChangeCameraToShowHidingPlace(MonoBehaviour ourObject){
-		GameHandler.mainCamera.cullingMask = HidingSpaceLayerMask;
+		GameHandler.Instance().mainCamera.cullingMask = HidingSpaceLayerMask;
 	}
 
 	void ChangeCameraToShowOrbOnly(MonoBehaviour ourObject){
-		GameHandler.mainCamera.cullingMask = OrbFollowLayerMask; 
+		GameHandler.Instance().mainCamera.cullingMask = OrbFollowLayerMask; 
 
 	}
 
 	void ChangeCameraToDefault(MonoBehaviour ourObject){
-		GameHandler.mainCamera.cullingMask = NormalLayerMask;
+		GameHandler.Instance().mainCamera.cullingMask = NormalLayerMask;
 	}
 	void Start () {
 		

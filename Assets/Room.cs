@@ -77,13 +77,13 @@ public class Room : MonoBehaviour
     {
         float ourAudioScale = 1.0f;
         int maxDistance = 0;
-        if (GameHandler.roomManager.numberOfRooms % 2 == 0)
+        if (GameHandler.Instance().roomManager.numberOfRooms % 2 == 0)
         {
-            maxDistance = GameHandler.roomManager.numberOfRooms / 2;
+            maxDistance = GameHandler.Instance().roomManager.numberOfRooms / 2;
         }
-        else if (GameHandler.roomManager.numberOfRooms % 2 != 0)
+        else if (GameHandler.Instance().roomManager.numberOfRooms % 2 != 0)
         {
-            maxDistance = (int)(GameHandler.roomManager.numberOfRooms / 2 + 0.5f);
+            maxDistance = (int)(GameHandler.Instance().roomManager.numberOfRooms / 2 + 0.5f);
         }
 
         if (distance == maxDistance)
@@ -112,7 +112,7 @@ public class Room : MonoBehaviour
     void PlayBoom()
     {
        
-        int distance = GameHandler.roomManager.DetermineHowCloseRoomIsToPlayer(this);
+        int distance = GameHandler.Instance().roomManager.DetermineHowCloseRoomIsToPlayer(this);
         float audioScale = ScaleAudio(distance);
         ourSource.PlayOneShot(boom, audioScale);
     }
@@ -144,7 +144,7 @@ public class Room : MonoBehaviour
         bool orbInSconeOrCarried = false;
         if (sconce != null)
         {
-            if (sconce.fillStatus == Sconce.Status.HoldingOrb || GameHandler.player.playerState == Player.PlayerState.CarryingOrb)
+            if (sconce.fillStatus == Sconce.Status.HoldingOrb || GameHandler.Instance().player.playerState == Player.PlayerState.CarryingOrb)
             {
                 //both won't be true, but one must be true
                 orbInSconeOrCarried = true;
@@ -152,7 +152,7 @@ public class Room : MonoBehaviour
         }
         else if (sconce == null)
         {
-            if (GameHandler.player.playerState == Player.PlayerState.CarryingOrb)
+            if (GameHandler.Instance().player.playerState == Player.PlayerState.CarryingOrb)
             {
                 orbInSconeOrCarried = true;
             }
@@ -210,8 +210,8 @@ public class Room : MonoBehaviour
 
     void Awake()
     {
-        ourRoomIndex = GameHandler.roomManager.GetIndexOfRoom(this);
-        ourReverseRoomIndex = GameHandler.roomManager.GetReverseIndexOfRoom(this);
+        ourRoomIndex = GameHandler.Instance().roomManager.GetIndexOfRoom(this);
+        ourReverseRoomIndex = GameHandler.Instance().roomManager.GetReverseIndexOfRoom(this);
         ourSource = GetComponent<AudioSource>();
         entranceA = transform.Find("EntranceA");
         //entrance A will always be on the left
@@ -231,6 +231,14 @@ public class Room : MonoBehaviour
         {
             adjacentRoom.EnemyEntered += EnemyEnteredAdjacentRoomWrapper;
             adjacentRoom.EnemyExited += CheckIfEnemyEnteredCurrentRoom;//EnemyExitedAdjacentRoomWrapper;
+        }
+    }
+
+    void OnDisable(){
+        foreach (Room adjacentRoom in adjacentRooms)
+        {
+            adjacentRoom.EnemyEntered -= EnemyEnteredAdjacentRoomWrapper;
+            adjacentRoom.EnemyExited -= CheckIfEnemyEnteredCurrentRoom;//EnemyExitedAdjacentRoomWrapper;
         }
     }
     public enum EnemyStatus
@@ -268,7 +276,7 @@ public class Room : MonoBehaviour
     public EnemyStatus enemyLocation;
     public void PlayerIntoRoom(Room room)
     {
-        GameHandler.proCamera.AddCameraTarget(room.gameObject.transform);
+        GameHandler.Instance().proCamera.AddCameraTarget(room.gameObject.transform);
         if (PlayerEnteredRoom != null)
         {
             PlayerEnteredRoom(room);

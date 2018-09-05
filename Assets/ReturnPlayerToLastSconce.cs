@@ -28,6 +28,16 @@ public class ReturnPlayerToLastSconce : MonoBehaviour
         FatherOrb.Dropped += SetOrbNotInPlayersHands;
         FatherOrb.PickedUp += SetOrbInPlayersHands;
     }
+
+    void OnDisable(){
+        Memory.PrevSconceTeleportGiven -= SetCanReturn;
+        FatherOrb.ArrivedAtPreviousSconce -= ArrivedAtLastSconceWithPlayerWrapper;
+        OrbController.ChannelingOrb -= SetOrbNotInPlayersHands;
+        OrbController.ManuallyStoppedChannelingOrb -= SetOrbInPlayersHands;
+        FatherOrb.Dropped -= SetOrbNotInPlayersHands;
+        FatherOrb.PickedUp -= SetOrbInPlayersHands;
+
+    }
     void ReturningToLastSconceWithPlayerWrapper()
     {
         if (canReturn)
@@ -36,12 +46,12 @@ public class ReturnPlayerToLastSconce : MonoBehaviour
             {
                 ReturningToLastSconceWithPlayer(this);
             }
-            GameHandler.fatherOrb.ReturnToLastSconceEarlyWrapper();
+            GameHandler.Instance().fatherOrb.ReturnToLastSconceEarlyWrapper();
 			//the player technically stays in the same location, but need to make sure not targeted by enemy
 			ourCamera.RemoveAllCameraTargets();
-            GameHandler.playerGO.layer = LayerMask.NameToLayer("OrbMovement");
-            //ourCamera.RemoveCameraTarget(GameHandler.playerGO.transform);
-            ourCamera.AddCameraTarget(GameHandler.fatherOrbGO.transform);
+            GameHandler.Instance().playerGO.layer = LayerMask.NameToLayer("OrbMovement");
+            //ourCamera.RemoveCameraTarget(GameHandler.Instance().playerGO.transform);
+            ourCamera.AddCameraTarget(GameHandler.Instance().fatherOrbGO.transform);
         }
     }
 
@@ -49,14 +59,14 @@ public class ReturnPlayerToLastSconce : MonoBehaviour
     {
         if (canReturn)
         {
-            GameHandler.playerGO.transform.position = GameHandler.fatherOrbGO.transform.position;
+            GameHandler.Instance().playerGO.transform.position = GameHandler.Instance().fatherOrbGO.transform.position;
             if (ArrivedAtLastSconceWithPlayer != null)
             {
                 ArrivedAtLastSconceWithPlayer(this);
             }
-            GameHandler.playerGO.layer = GameHandler.defaultPlayerLayer;
-            ourCamera.RemoveCameraTarget(GameHandler.fatherOrbGO.transform);
-            ourCamera.AddCameraTarget(GameHandler.playerGO.transform);
+            GameHandler.Instance().playerGO.layer = GameHandler.Instance().defaultPlayerLayer;
+            ourCamera.RemoveCameraTarget(GameHandler.Instance().fatherOrbGO.transform);
+            ourCamera.AddCameraTarget(GameHandler.Instance().playerGO.transform);
             SetCANTReturn();
         }
     }
@@ -93,7 +103,7 @@ public class ReturnPlayerToLastSconce : MonoBehaviour
             //TODO: Connect everythign
             ReturningToLastSconceWithPlayerWrapper();
 
-            //	GameHandler.fatherOrb.ReturnToLastSconceEarlyWrapper() ;
+            //	GameHandler.Instance().fatherOrb.ReturnToLastSconceEarlyWrapper() ;
         }
 
     }

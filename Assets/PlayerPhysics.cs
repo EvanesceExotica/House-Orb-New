@@ -13,6 +13,12 @@ public class PlayerPhysics : MonoBehaviour {
 		ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer += MakePlayerCoporeal;
 	}
 
+	void OnDisable(){
+		ReturnPlayerToLastSconce.ReturningToLastSconceWithPlayer -= MakePlayerGhost;
+		ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= MakePlayerCoporeal;
+
+	}
+
 	void MakePlayerGhost(UnityEngine.Object ourObject){
 		DisableCollider();
 		DisableRigidbody();

@@ -26,6 +26,12 @@ public class CorruptedObject : ParentTrigger
 		Sconce.OrbInSconce += SetOrbInSconce;
 		Sconce.OrbRemovedFromSconce += SetOrbOutOfSconce;
     }
+
+	void OnDisable(){
+		OrbController.ChannelingOrb -= SetCanGrowCorruption;
+		Sconce.OrbInSconce -= SetOrbInSconce;
+		Sconce.OrbRemovedFromSconce -= SetOrbOutOfSconce;
+	}
     public static event Action Corrupting;
 
     void CorruptingWrapper()
@@ -110,7 +116,7 @@ public class CorruptedObject : ParentTrigger
 			}
 			newVector = new Vector2(corruptionEffect.localScale.x - 0.2f, corruptionEffect.localScale.y - 0.2f);
 			corruptionEffect.DOScale(newVector, 0.5f);
-			if(orbInSconce || GameHandler.fatherOrb.coolingDownFromCorruption){
+			if(orbInSconce || GameHandler.Instance().fatherOrb.coolingDownFromCorruption){
 				//the orb being in the sconce should drastically reduce the uncorruption time
 				yield return new WaitForSeconds(1.0f);
 			}
@@ -126,7 +132,7 @@ public class CorruptedObject : ParentTrigger
 	}
     public override void OnChildTriggerEnter2D(Collider2D hit, GameObject child)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO && canGrowCorruption)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO && canGrowCorruption)
         {
             CorruptingWrapper();
         }
@@ -134,7 +140,7 @@ public class CorruptedObject : ParentTrigger
 
     public override void OnChildTriggerExit2D(Collider2D hit, GameObject child)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO && canGrowCorruption)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO && canGrowCorruption)
         {
             StoppedCorruptingWrapper();
         }

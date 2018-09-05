@@ -96,7 +96,30 @@ public class OrbEffects : MonoBehaviour
         CorruptedObject.StoppedCorrupting += StopCorruptionEffect;
     }
 
+    void OnDisable(){
+        HiddenSconce.SconceRevealed -= ReturnToStandardParticleEffect;
+        ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= ResetSystems;
+        PromptPlayerHit.AutoRepelUsed -= ReturnToStandardParticleEffect;
 
+        Memory.AutoReflectGiven -= StartAutoReflectChargeParticleSystem;
+        Memory.RefreshGiven -= StartRefreshParticleSystem;
+        Memory.PrevSconceTeleportGiven -= StartPrevSconceTeleportParticleSystem;
+        Memory.HintGiven -= StartHintParticleSystem;
+
+        //PromptPlayerHit.PlayerParried += Parry;
+        PromptPlayerHit.AutoRepelUsed -= Parry;
+
+        FatherOrb.Fizzing -= StartFizz;
+        FatherOrb.RedHot -= IncreaseFizzTempo;
+        FatherOrb.Critical -= IncreaseToSuperPanicWoosh;
+        //FatherOrb.Overheated += StopFizz;
+        FatherOrb.OrbRefreshed -= StopFizz;
+        FatherOrb.Dropped -= StopFizz; 
+        
+        CorruptedObject.Corrupting -= PlayCorruptionEffect;
+        CorruptedObject.StoppedCorrupting -= StopCorruptionEffect;
+
+    }
     void CloseInOnOrb()
     {
 

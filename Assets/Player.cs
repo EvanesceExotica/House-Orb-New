@@ -245,4 +245,28 @@ public class Player : MonoBehaviour {
 		OrbController.SconceRevealedStoppedChannelingOrb += FadeOnPlayerLight;
 	}
 
+	void OnDisable(){
+		FatherOrb.PickedUp -= this.SetCarryingOrb;
+		FatherOrb.Dropped -= this.SetNotCarryingOrb;
+		Sconce.OrbInSconce -=  this.SetNotCarryingOrb;
+
+
+		OrbController.ChannelingOrb -= SetNotCarryingOrb;
+		OrbController.ManuallyStoppedChannelingOrb -= SetCarryingOrb;
+		HidingSpace.PlayerHiding -= SetHiding;
+
+		//TODO -- separate the hiding and the orb-carrying. I want the light to cause the player to be unhidden.
+
+		HidingSpace.PlayerNoLongerHiding -= SetNotCarryingOrb;
+		PromptPlayerHit.PlayerFailed -= SetBlinded;
+		Food.AteFood -= SetBoosted;
+		Food.AteFood -=EatingCooldownWrapper;
+
+		PromptPlayerHit.PlayerFailed -= SetTagged;
+
+		OrbController.ChannelingOrb -= FadeOffPlayerLight;
+		OrbController.ManuallyStoppedChannelingOrb -= FadeOnPlayerLight;
+
+	}
+
 }

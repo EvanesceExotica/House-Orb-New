@@ -22,6 +22,13 @@ public class Hint : MonoBehaviour
         Memory.HintGiven += SetCanSenseSconce;
     }
 
+    void OnDisable(){
+        HiddenSconce.InSemiCloseRange -= SetSemiClosePlaybackSpeed;
+        HiddenSconce.InCloseRange -= SetVeryClosePlaybackSpeed; 
+        Memory.HintGiven -= SetCanSenseSconce;
+
+    }
+
     void CheckIfRoomWithOurSconce(Room room)
     {
         if (room == ourHiddenSconce.parentRoom && canSenseHiddenSconce)

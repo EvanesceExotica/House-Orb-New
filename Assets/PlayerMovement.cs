@@ -52,6 +52,29 @@ public class PlayerMovement : MonoBehaviour
         FatherOrb.Dropped += SetNOTHoldingOrbAnimation;
     }
 
+    void OnDisable(){
+        OrbController.ChannelingOrb -= SetCantMove;
+        //make this a 
+        OrbController.ManuallyStoppedChannelingOrb -= SetYesCanMove;
+        OrbController.SconceRevealedStoppedChannelingOrb -= SetYesCanMove;
+
+        FatherOrb.MovingBetweenPlayerAndObject -= SetCantMove;
+        FatherOrb.StoppedMovingBetweenPlayerAndObject -= SetYesCanMove;
+
+        Memory.LookingAtMemory -= SetCantMove;
+        Memory.StoppedLookingAtMemory -= SetYesCanMove;
+
+        HidingSpace.PlayerHiding -= MakePlayerStatic;
+        HidingSpace.PlayerNoLongerHiding -= MakePlayerDynamic;
+
+        PromptPlayerHit.WaitingForScreamPrompt -= SetCantMove;
+        PromptPlayerHit.ScreamPromptPassed -= SetYesCanMove;
+
+        FatherOrb.PickedUp -= SetHoldingOrbAnimation;
+        FatherOrb.Dropped -= SetNOTHoldingOrbAnimation;
+
+    }
+
     void SetHoldingOrbAnimation(MonoBehaviour behavior){
         playerAnimator.SetBool("OrbHeld", true);
     }
@@ -62,13 +85,13 @@ public class PlayerMovement : MonoBehaviour
 
     void MakePlayerStatic(MonoBehaviour ourObject)
     {
-        SetCantMove(GameHandler.player);
+        SetCantMove(GameHandler.Instance().player);
         SetKinematic();
     }
 
     void MakePlayerDynamic(MonoBehaviour ourObject)
     {
-        SetYesCanMove(GameHandler.player);
+        SetYesCanMove(GameHandler.Instance().player);
         SetDynamic();
     }
 
@@ -161,8 +184,8 @@ public class PlayerMovement : MonoBehaviour
         //spriteRenderer.flipX = facingRight;
 
         facingRight = !facingRight;
-        GameHandler.SwitchOrbHoldPositions(facingRight);
-        GameHandler.fatherOrb.HandleFlip();
+        GameHandler.Instance().SwitchOrbHoldPositions(facingRight);
+        GameHandler.Instance().fatherOrb.HandleFlip();
         
     }
 

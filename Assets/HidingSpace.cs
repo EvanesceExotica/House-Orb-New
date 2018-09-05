@@ -72,8 +72,8 @@ public class HidingSpace : MonoBehaviour, iInteractable
     {
 //        ourInteriorBackgroundSprite = GetComponentsInChildren<SpriteRenderer>()[1].gameObject; 
 audioSource = GetComponent<AudioSource>();
-        upCanvasGroup = GameHandler.breathCanvas.Find("Up").GetComponent<CanvasGroup>();
-        downCanvasGroup = GameHandler.breathCanvas.Find("Down").GetComponent<CanvasGroup>();
+        upCanvasGroup = GameHandler.Instance().breathCanvas.Find("Up").GetComponent<CanvasGroup>();
+        downCanvasGroup = GameHandler.Instance().breathCanvas.Find("Down").GetComponent<CanvasGroup>();
         upBar = upCanvasGroup.GetComponentsInChildren<Image>()[0];
         downBar = downCanvasGroup.GetComponentsInChildren<Image>()[0];
         boundsGenerator = GetComponent<GenerateNewBounds>();
@@ -91,6 +91,18 @@ audioSource = GetComponent<AudioSource>();
 
     }
 
+    void OnDisable(){
+        RemoveParentRoomDependencies();
+    }
+
+    void RemoveParentRoomDependencies(){
+        if(parentRoom != null){
+
+            parentRoom.EnemyEnteredAdjacentRoom -= HyperventilationHandlerWrapper;
+            parentRoom.EnemyExitedAdjacentRoom -= StopHyperventilating;
+        }
+    }
+
     public void SetParentRoomDependencies()
     {
         parentRoom.EnemyEnteredAdjacentRoom += HyperventilationHandlerWrapper;
@@ -100,8 +112,8 @@ audioSource = GetComponent<AudioSource>();
     {
         alreadyHiding = true;
         thisHidingPlaceStatus = PlayerStatus.HidingInThisPlace;
-        GameHandler.playerGO.transform.position = hidingTransform.position;
-        GameHandler.playerGO.layer = LayerMask.NameToLayer("HidingSpace");//LayerMask.(int)hidingLayer;
+        GameHandler.Instance().playerGO.transform.position = hidingTransform.position;
+        GameHandler.Instance().playerGO.layer = LayerMask.NameToLayer("HidingSpace");//LayerMask.(int)hidingLayer;
         if (PlayerHiding != null)
         {
             PlayerHiding(this);
@@ -275,8 +287,8 @@ public PlayerStatus thisHidingPlaceStatus;
     {
         alreadyHiding = false;
         thisHidingPlaceStatus = PlayerStatus.NotHidingHere;
-        GameHandler.playerGO.transform.position = unhiddenSpace.position;
-        GameHandler.playerGO.layer = GameHandler.defaultPlayerLayer;
+        GameHandler.Instance().playerGO.transform.position = unhiddenSpace.position;
+        GameHandler.Instance().playerGO.layer = GameHandler.Instance().defaultPlayerLayer;
         if (PlayerNoLongerHiding != null)
         {
             PlayerNoLongerHiding(this);

@@ -158,11 +158,16 @@ public class Sconce : PooledObject, iInteractable
         }
         if (startsWithOrb)
         {
-            GameHandler.fatherOrbGO.transform.parent = transform;
-            GameHandler.fatherOrb.transform.position = transform.position;
+            GameHandler.Instance().fatherOrbGO.transform.parent = transform;
+            GameHandler.Instance().fatherOrb.transform.position = transform.position;
         }
         FatherOrb.ArrivedAtPreviousSconce += OrbPlacedInUs;
         //fillStatus = Status.Empty;
+    }
+
+    void OnDisable(){
+        FatherOrb.ArrivedAtPreviousSconce -= OrbPlacedInUs;
+
     }
 
     void PlayOccupiedParticles()
@@ -177,7 +182,7 @@ public class Sconce : PooledObject, iInteractable
     {
         if (parentRoom != null)
         {
-            float audioScale = ScaleAudio.ScaleAudioByRoomDistance(GameHandler.roomManager.DetermineHowCloseRoomIsToPlayer(parentRoom));
+            float audioScale = ScaleAudio.ScaleAudioByRoomDistance(GameHandler.Instance().roomManager.DetermineHowCloseRoomIsToPlayer(parentRoom));
         }
         audioSource.time = 1.0f;
         audioSource.PlayOneShot(orbInSconceSound);

@@ -143,7 +143,7 @@ public class DialogueDisplayer : MonoBehaviour
         if (ourSpeaker != null)
         {
             Debug.Log(ourSpeaker.transform.position);
-            Vector2 speechBubbleLineStartPosition = GameHandler.bubbleLineStartTransform.position;
+            Vector2 speechBubbleLineStartPosition = GameHandler.Instance().bubbleLineStartTransform.position;
             ourLineRenderer.SetPosition(0, speechBubbleLineStartPosition);
             ourLineRenderer.SetPosition(1, ourSpeaker.transform.position);
             transform.parent = ourSpeaker.transform;
@@ -151,12 +151,12 @@ public class DialogueDisplayer : MonoBehaviour
     }
 
     void SetDialogueBoxAsCameraTarget(){
-        GameHandler.proCamera.AddCameraTarget(this.transform);
+        GameHandler.Instance().proCamera.AddCameraTarget(this.transform);
     }
 
     void RemoveDialogueBoxAsCameraTarget(){
 
-        GameHandler.proCamera.RemoveCameraTarget(this.transform);
+        GameHandler.Instance().proCamera.RemoveCameraTarget(this.transform);
     }
 
     GameObject ReturnSpeaker(Speech speech)
@@ -164,11 +164,11 @@ public class DialogueDisplayer : MonoBehaviour
         GameObject ourSpeaker = null;
         if (speech.speaker == Speech.OurSpeaker.player)
         {
-            ourSpeaker = GameHandler.playerGO;
+            ourSpeaker = GameHandler.Instance().playerGO;
         }
         else if (speech.speaker == Speech.OurSpeaker.orb)
         {
-            ourSpeaker = GameHandler.fatherOrbGO;
+            ourSpeaker = GameHandler.Instance().fatherOrbGO;
         }
         return ourSpeaker;
     }

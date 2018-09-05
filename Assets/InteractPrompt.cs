@@ -59,7 +59,7 @@ public class InteractPrompt : MonoBehaviour
         {
             FadeOut();
             ourText.text = " ";
-            transform.parent = GameHandler.playerGO.transform;
+            transform.parent = GameHandler.Instance().playerGO.transform;
         }
     }
 

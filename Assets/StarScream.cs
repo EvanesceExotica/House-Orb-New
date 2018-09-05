@@ -61,6 +61,10 @@ public class StarScream : MonoBehaviour
         Monster.ReadyToScream += StartScreamWrapper;
     }
 
+    void OnDisable(){
+        Monster.ReadyToScream -= StartScreamWrapper;
+    }
+
     void StartScreamWrapper()
     {
         StartCoroutine(StartScream());
@@ -70,7 +74,7 @@ public class StarScream : MonoBehaviour
     {
         //have something play audio clip here
         //we want the scream object to start from the monster
-        GameHandler.screamFollowObject.gameObject.transform.position = GameHandler.monsterGO.transform.position;
+        GameHandler.Instance().screamFollowObject.gameObject.transform.position = GameHandler.Instance().monsterGO.transform.position;
         yield return new WaitForSeconds(screamDelay);
         StartCoroutine(SendScream());
     }
@@ -90,7 +94,7 @@ public class StarScream : MonoBehaviour
         screaming = true;
         while (screaming)
         {
-            GameHandler.screamFollowObject.MoveScreamObjectWrapper(roomList[currentRoomIndexOfScream], positiveOrNegative, 0.5f);
+            GameHandler.Instance().screamFollowObject.MoveScreamObjectWrapper(roomList[currentRoomIndexOfScream], positiveOrNegative, 0.5f);
             //	Debug.Log("We're on room " + roomList[roomIndexOfScream].gameObject.name + " which has an index of " + roomIndexOfScream);
             if (currentRoomIndexOfScream == roomManager.GetPlayerCurrentRoomIndex())
             {
@@ -154,7 +158,7 @@ public class StarScream : MonoBehaviour
     IEnumerator Rumble()
     {
 
-        List<Room> acceptableRooms = GameHandler.monster.GetRoomAtLeastMinRoomsAway(4);
+        List<Room> acceptableRooms = GameHandler.Instance().monster.GetRoomAtLeastMinRoomsAway(4);
 
         int positiveOrNegative = UnityEngine.Random.Range(0, 2) * 2 - 1;
         List<Room> roomList = roomManager.roomList;

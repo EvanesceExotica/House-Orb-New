@@ -12,6 +12,11 @@ public class Exit : MonoBehaviour, iInteractable {
 		ourExitCollider.enabled = false;
 		SconceManager.AllSconcesLit += UnlockedExit;	
 	}
+
+	void OnDisable(){
+
+		SconceManager.AllSconcesLit -= UnlockedExit;	
+	}
 	void UnlockedExit(){
 		//todo: door-opening animations and stuff
 		ourExitCollider.enabled = true;

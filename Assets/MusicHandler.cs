@@ -37,32 +37,50 @@ public class MusicHandler : MonoBehaviour
         OrbController.SconceRevealedStoppedChannelingOrb += SetNormalMood;
         OrbController.ManuallyStoppedChannelingOrb += SetNormalMood;
 
+
+    }
+
+    void OnDisable(){
+
+		PromptPlayerHit.PlayerFailed -= SetChasedMood;
+        PromptPlayerHit.PlayerFailed -= StopScreamDrone;
+
+        PromptPlayerHit.PlayerParried -= SetNormalMood;
+        PromptPlayerHit.PlayerParried -= StopScreamDrone;
+
+        Monster.BackToSearching -= SetNormalMood;
+        StarScream.ScreamBegun -= PlayScreamDrone;
+
+        OrbController.ChannelingOrb -= SetChannelingMusic;
+        //TODO: Test that the scream isn't happening before setting back to normal for example
+        OrbController.SconceRevealedStoppedChannelingOrb -= SetNormalMood;
+        OrbController.ManuallyStoppedChannelingOrb -= SetNormalMood;
     }
 
     void SetChannelingMusic(MonoBehaviour mono){
         //different channeling music while being chased
-        GameHandler.fader.Play(channelingMusic);
+        GameHandler.Instance().fader.Play(channelingMusic);
         //ChangeClip(Mood.Channeling);
     }
 
     void PlayScreamDrone(){
-        GameHandler.screamSoundObjectSource.clip = screamMusic;
-        GameHandler.screamSoundObjectSource.Play();
+        GameHandler.Instance().screamSoundObjectSource.clip = screamMusic;
+        GameHandler.Instance().screamSoundObjectSource.Play();
         //musicSource.PlayOneShot(screamMusic);
     }
 
     void StopScreamDrone(){
-        GameHandler.screamSoundObjectSource.Stop();
+        GameHandler.Instance().screamSoundObjectSource.Stop();
     }
 
 	void SetChasedMood(){
-        GameHandler.fader.Play(chaseMusic);
+        GameHandler.Instance().fader.Play(chaseMusic);
 		//ChangeClip(Mood.Chased);
 	}
 
     void SetNormalMood(MonoBehaviour mono){
 
-        GameHandler.fader.Play(normalMusic);
+        GameHandler.Instance().fader.Play(normalMusic);
         //ChangeClip(Mood.Normal);
     }
 

@@ -52,6 +52,15 @@ public class RotateAround : MonoBehaviour
         }
 
     }
+
+    void OnDisable(){
+        StarScream.ScreamHitRoomAdjacent -= RotateSoulsOutWrapper;
+        FatherOrb.Dropped -= this.RotateSoulsInWrapper;
+        OrbFire.WrongOrNoSoulChosen -= DisperseSouls;
+        OrbFire.CorrectSoulChosen -= DisperseSouls;
+        PromptPlayerHit.ScreamPrompted -= ChangeSoulColor;
+
+    }
     void Start()
     {
 
@@ -105,6 +114,7 @@ public class RotateAround : MonoBehaviour
         foreach (TrailRenderer tr in trailRenderers)
         {
             tr.time = 0f;
+            tr.enabled = false;
         }
         float distance = Vector2.Distance(lights[0].transform.position, transform.position);
         while (distance > 0.5f)
@@ -126,6 +136,7 @@ public class RotateAround : MonoBehaviour
 
     void ChangeSoulColor(MonoBehaviour something)
     {
+        //this method chooses the soul that's going to be collided with to have a successful hit
         int randomIndex = UnityEngine.Random.Range(0, lights.Count);
         Soul chosenSoul = lights[randomIndex].GetComponent<Soul>();
         chosenSoul.Chosen();

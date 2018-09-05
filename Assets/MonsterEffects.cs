@@ -12,6 +12,12 @@ public class MonsterEffects : MonoBehaviour {
 		HidingSpace.PlayerNoLongerHiding += EnableLight;
 	}
 
+	void OnDisable(){
+		HidingSpace.PlayerHiding -= DisableLight;
+		HidingSpace.PlayerNoLongerHiding -= EnableLight;
+
+	}
+
 	void DisableLight(MonoBehaviour ourObject){
 		hauntingLights.SetActive(false);
 	}

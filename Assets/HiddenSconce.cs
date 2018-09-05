@@ -110,7 +110,7 @@ public class HiddenSconce : ParentTrigger
 
     public override void OnChildTriggerEnter2D(Collider2D hit, GameObject go)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO)
         {
             InSemiCloseRangeWrapper();
         }
@@ -118,16 +118,16 @@ public class HiddenSconce : ParentTrigger
 
     public override void OnChildTriggerExit2D(Collider2D hit, GameObject go)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO)
         {
             OutOfRangeWrapper();
         }
     }
     void OnTriggerEnter2D(Collider2D hit)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO)
         {
-            if (GameHandler.fatherOrb.heldStatus == FatherOrb.HeldStatuses.Channeled)
+            if (GameHandler.Instance().fatherOrb.heldStatus == FatherOrb.HeldStatuses.Channeled)
             {
                 orbOverlappingUs = true;
                 StartCoroutine(BeginDeterminingProximity());
@@ -138,7 +138,7 @@ public class HiddenSconce : ParentTrigger
 
     void OnTriggerExit2D(Collider2D hit)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO)
         {
             orbOverlappingUs = false;
         }
@@ -151,7 +151,7 @@ public class HiddenSconce : ParentTrigger
         while (orbOverlappingUs)
         {
 
-            if (Vector2.Distance(GameHandler.fatherOrbGO.transform.position, transform.position) <= proximityRange)
+            if (Vector2.Distance(GameHandler.Instance().fatherOrbGO.transform.position, transform.position) <= proximityRange)
             {
                 //TODO: Code in the sconce appearing
                 //FOUND IT

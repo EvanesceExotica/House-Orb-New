@@ -27,6 +27,7 @@ public class PromptPlayerHit : MonoBehaviour
     public static event Action<MonoBehaviour> ScreamPrompted;
 
     public void ScreamPromptedWrapper(){
+        Debug.Log("Scream prompted");
         if(ScreamPrompted != null){
             ScreamPrompted(this);
         }
@@ -93,6 +94,13 @@ public class PromptPlayerHit : MonoBehaviour
 
         StarScream.ScreamHitRoomAdjacent += FocusOnOrb;
 
+    }
+
+    void OnDisable(){
+
+        Room.RoomWithPlayerHit -= this.PromptPlayerHitWrapper;
+        AutoRepel.AutoRepelTriggered -= AutoRepelActivated;
+        StarScream.ScreamHitRoomAdjacent -= FocusOnOrb;
     }
 
     [Header("Top")]
@@ -198,25 +206,25 @@ public class PromptPlayerHit : MonoBehaviour
     }
     void AddOrbAsTarget()
     {
-        GameHandler.proCamera.RemoveCameraTarget(GameHandler.roomManager.GetPlayerCurrentRoom().gameObject.transform, 1.0f);
-        GameHandler.proCamera.AddCameraTarget(GameHandler.fatherOrbGO.transform, 1.0f);
+        GameHandler.Instance().proCamera.RemoveCameraTarget(GameHandler.Instance().roomManager.GetPlayerCurrentRoom().gameObject.transform, 1.0f);
+        GameHandler.Instance().proCamera.AddCameraTarget(GameHandler.Instance().fatherOrbGO.transform, 1.0f);
     }
 
     void RemoveOrbAsTarget()
     {
-        GameHandler.proCamera.RemoveCameraTarget(GameHandler.fatherOrbGO.transform, 1.0f);
-        GameHandler.proCamera.AddCameraTarget(GameHandler.roomManager.GetPlayerCurrentRoom().gameObject.transform, 1.0f);
+        GameHandler.Instance().proCamera.RemoveCameraTarget(GameHandler.Instance().fatherOrbGO.transform, 1.0f);
+        GameHandler.Instance().proCamera.AddCameraTarget(GameHandler.Instance().roomManager.GetPlayerCurrentRoom().gameObject.transform, 1.0f);
     }
 
     void ZoomIn()
     {
-        GameHandler.proCamera.Zoom(-1, 0.5f, Com.LuisPedroFonseca.ProCamera2D.EaseType.EaseInOut);
+        GameHandler.Instance().proCamera.Zoom(-1, 0.5f, Com.LuisPedroFonseca.ProCamera2D.EaseType.EaseInOut);
     }
 
     void ZoomOut()
     {
 
-        GameHandler.proCamera.Zoom(1, 0.5f, Com.LuisPedroFonseca.ProCamera2D.EaseType.EaseInOut);
+        GameHandler.Instance().proCamera.Zoom(1, 0.5f, Com.LuisPedroFonseca.ProCamera2D.EaseType.EaseInOut);
     }
 
     enum Sides

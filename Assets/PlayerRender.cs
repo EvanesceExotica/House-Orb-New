@@ -17,6 +17,12 @@ public class PlayerRender : MonoBehaviour {
 	//TODO: Maybe put the above back in? The camera script should handle it
 	}
 
+	void OnDisable(){
+
+		ReturnPlayerToLastSconce.ReturningToLastSconceWithPlayer -=TurnOffPlayerRenderer;
+		ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= TurnOnPlayerRenderer;
+	}
+
 	public void TurnOffPlayerRenderer(UnityEngine.Object ourObject){
 		spriteRenderer.enabled = false;
 	}

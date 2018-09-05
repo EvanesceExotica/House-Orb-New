@@ -141,6 +141,20 @@ public class SconceManager : MonoBehaviour
         }
         numberOfSconcesOnLevel = TallySconceNumber();
     }
+
+    void OnDisable(){
+        Sconce.OrbInSconce -= AddLitSconceToList;
+        foreach (Sconce sconce in revealedSconces)
+        {
+            sconce.Extinguished -= RemoveLitSconcesFromList;
+
+        } 
+         foreach (HiddenSconce hiddenSconce in unrevealedSconces)
+        {
+            hiddenSconce.NewSconceRevealed -= RemoveHiddenSconceAndAddRevealed;
+
+        }
+    }
     // Use this for initialization
     void Start()
     {

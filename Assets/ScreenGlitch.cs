@@ -15,6 +15,10 @@ public class ScreenGlitch : MonoBehaviour
         RoomManager.PlayerEnteredNewRoom += SetCurrentRoom;
     }
 
+    void OnDisable(){
+        RoomManager.PlayerEnteredNewRoom -= SetCurrentRoom;
+    }
+
     void SetCurrentRoom(Room room)
     {
         //the player entered a new room, so let's reset it 
@@ -37,7 +41,7 @@ public class ScreenGlitch : MonoBehaviour
 
     public void DeactivateGlitchEffect(Room room)
     {
-		if(GameHandler.roomManager.GetPlayerCurrentRoom().enemyLocation == Room.EnemyStatus.OutOfRoom){
+		if(GameHandler.Instance().roomManager.GetPlayerCurrentRoom().enemyLocation == Room.EnemyStatus.OutOfRoom){
 			cancel = true;
 		}
 

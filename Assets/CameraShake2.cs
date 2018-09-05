@@ -42,6 +42,11 @@ public class CameraShake2 : MonoBehaviour {
 		//PromptPlayerHit.PlayerParried += ScreamShake;
 	}
 
+	void OnDisable(){
+
+		Monster.ReadyToScream -= StartShakeWithDelay;
+	}
+
 
 	void StartShakeWithDelay(){
 		StartCoroutine(ShakeWithDelay());

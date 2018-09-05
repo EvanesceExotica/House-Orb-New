@@ -28,7 +28,7 @@ public class MagneticObject : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D hit)
     {
-        if (hit.gameObject == GameHandler.fatherOrbGO)
+        if (hit.gameObject == GameHandler.Instance().fatherOrbGO)
         {
             AttractedWrapper();
         }
@@ -36,7 +36,7 @@ public class MagneticObject : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D hit)
     {
-		if(hit.gameObject == GameHandler.fatherOrbGO){
+		if(hit.gameObject == GameHandler.Instance().fatherOrbGO){
 			StoppedAttractionWrapper();
 		}
 

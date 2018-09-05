@@ -153,6 +153,15 @@ public class Memory : MonoBehaviour, iInteractable
         }
         //memoryCameras = GameObject.FindGameObjectsWithTag("MemoryCam").GetComponents<Camera>();
     }
+
+    void OnDisable(){
+        OrbController.ChannelingOrb -= SetCantLookAtMemory;
+        FatherOrb.PickedUp -= SetCanLookAtMemory;
+        FatherOrb.Dropped -= SetCantLookAtMemory;
+        Conversation.FinishedDisplayingMemory -= ApplyMemoryEffectsWrapper;        
+
+
+    }
     public void OnStopHoverMe(Player player)
     {
         if (canLookAtMemory)
@@ -163,7 +172,7 @@ public class Memory : MonoBehaviour, iInteractable
     }
 
     public IEnumerator InitializeMemory(){
-        while (Vector2.Distance(GameHandler.fatherOrbGO.transform.position, transform.position) > 0.1f)
+        while (Vector2.Distance(GameHandler.Instance().fatherOrbGO.transform.position, transform.position) > 0.1f)
         {
             yield return null;
         }
@@ -212,7 +221,7 @@ public class Memory : MonoBehaviour, iInteractable
             }
         }
         MoveBack();
-        while (Vector2.Distance(GameHandler.fatherOrbGO.transform.position, GameHandler.fatherOrbHoldTransform.position) > 0.1f)
+        while (Vector2.Distance(GameHandler.Instance().fatherOrbGO.transform.position, GameHandler.Instance().fatherOrbHoldTransform.position) > 0.1f)
         {
             yield return null;
         }
@@ -243,12 +252,12 @@ public class Memory : MonoBehaviour, iInteractable
     void MoveToMemory()
     {
         //play like "Hands lifted" animation
-        GameHandler.fatherOrb.MoveUsWrapper(GameHandler.fatherOrbHoldTransform.position, transform.position, this);
+        GameHandler.Instance().fatherOrb.MoveUsWrapper(GameHandler.Instance().fatherOrbHoldTransform.position, transform.position, this);
     }
 
     void MoveBack()
     {
-        GameHandler.fatherOrb.MoveUsWrapper(this.gameObject.transform.position, GameHandler.fatherOrbHoldTransform.position, GameHandler.player);
+        GameHandler.Instance().fatherOrb.MoveUsWrapper(this.gameObject.transform.position, GameHandler.Instance().fatherOrbHoldTransform.position, GameHandler.Instance().player);
 
     }
     void Start()

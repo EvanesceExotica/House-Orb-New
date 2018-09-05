@@ -129,7 +129,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
 
     void FloatMe()
     {
-        if ((heldStatus == HeldStatuses.Carried && !movingToObject && !flipping /*GameHandler.player.movement.flipping*/) || (inSconce && !movingToObject) /*||  /*!GameHandler.player.movement.flipping*/ )
+        if ((heldStatus == HeldStatuses.Carried && !movingToObject && !flipping /*GameHandler.Instance().player.movement.flipping*/) || (inSconce && !movingToObject) /*||  /*!GameHandler.Instance().player.movement.flipping*/ )
         {
             tempPos = posOffset;
             tempPos.y += Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude;
@@ -138,7 +138,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         }
         if (flipping)
         {
-            if (transform.localPosition.x == GameHandler.fatherOrbHoldTransform.localPosition.x)
+            if (transform.localPosition.x == GameHandler.Instance().fatherOrbHoldTransform.localPosition.x)
             {
                 flipping = false;
             }
@@ -152,7 +152,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         flipping = true;
         if (heldStatus == HeldStatuses.Carried)
         {
-            float newX = GameHandler.fatherOrbHoldTransform.localPosition.x;
+            float newX = GameHandler.Instance().fatherOrbHoldTransform.localPosition.x;
             Vector2 newPosition = new Vector2(newX, transform.localPosition.y);
             transform.localPosition = newPosition;
             posOffset = transform.localPosition;
@@ -164,7 +164,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
     void Awake()
     {
         renderer = GetComponent<MeshRenderer>();
-        player = GameHandler.playerGO;
+        player = GameHandler.Instance().playerGO;
         FatherOrbPos = player.transform.Find("FatherOrbPos");
         durationHeld = 35.0f;
         durationBeforeFizzing = 25.0f;
@@ -192,6 +192,18 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         //SetInSconce(transform.parent.gameObject);
     }
 
+    void OnDisable(){
+        Sconce.OrbInSconce -= this.PlayerDroppedOrb;
+        Sconce.OrbInSconce -= this.EnteredSconce;
+        Sconce.OrbRemovedFromSconce -= this.PickedUpByPlayer;  
+        PromptPlayerHit.PlayerParried -= RefreshTime;
+        PromptPlayerHit.PlayerFailed -= FailureDelayWrapper;
+        //TODO: Fix the below
+        OrbController.ManuallyStoppedChannelingOrb -= PickedUpByPlayer;
+        CorruptedObject.Corrupting -= BeCorrupted;
+        CorruptedObject.StoppedCorrupting -= SetCorruptionSourceRemoved;
+    }
+
     bool beingCorrupted;
     void SetCorruptionSourceRemoved()
     {
@@ -212,7 +224,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
     {
         Debug.Log("This corruption meter is increasing");
         beingCorrupted = true;
-        GameHandler.orbEffects.PlayCorruptionSound(corruptionMeter);
+        GameHandler.Instance().orbEffects.PlayCorruptionSound(corruptionMeter);
         bool buildUpStopped = false;
         while (corruptionMeter <= maxCorruption && corruptionMeter >= 0)
         {
@@ -223,7 +235,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
                 if (!buildUpStopped)
                 {
                     Debug.Log("Stopped being corrupted");
-                    GameHandler.orbEffects.StopCorruptionSound();
+                    GameHandler.Instance().orbEffects.StopCorruptionSound();
                     buildUpStopped = true;
                 }
                 if (inSconce)
@@ -247,7 +259,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
                 if (buildUpStopped)
                 {
                     Debug.Log("Started being corrupted again");
-                    GameHandler.orbEffects.PlayCorruptionSound(corruptionMeter);
+                    GameHandler.Instance().orbEffects.PlayCorruptionSound(corruptionMeter);
                     buildUpStopped = false;
                 }
                 corruptionMeter += 1.0f;
@@ -258,7 +270,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
                 //corruptionImage.fillAmount += 1.0f;
             }
             //corruptionMeter += 3.0f;
-            //GameHandler.orbEffects.PlayCorruptionSound(corruptionMeter);
+            //GameHandler.Instance().orbEffects.PlayCorruptionSound(corruptionMeter);
             yield return new WaitForSeconds(0.5f);
         }
         if (corruptionMeter >= maxCorruption)
@@ -273,7 +285,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
             beingCorrupted = false;
         }
         StartCoroutine(CooldownFromCorruption());
-        GameHandler.orbEffects.StopCorruptionSound();
+        GameHandler.Instance().orbEffects.StopCorruptionSound();
     }
 
     public bool coolingDownFromCorruption;
@@ -376,7 +388,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
             currentSconce = null;
         }
         instabilityStatus = InstabilityStatus.FreshPickedUp;
-        StartCoroutine(MoveUs(transform.position, GameHandler.fatherOrbHoldTransform.position, GameHandler.player));
+        StartCoroutine(MoveUs(transform.position, GameHandler.Instance().fatherOrbHoldTransform.position, GameHandler.Instance().player));
         transform.parent = player.transform;
         //posOffset = transform.localPosition;
         if (PickedUp != null)

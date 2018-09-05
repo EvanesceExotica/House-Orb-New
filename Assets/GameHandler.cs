@@ -3,48 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using Com.LuisPedroFonseca.ProCamera2D;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class GameHandler : MonoBehaviour
 {
 
-    public static PromptPlayerHit prompter;
-    public static ScreamFollowObject screamFollowObject;
-    public static RoomManager roomManager;
-    public static LayerMask defaultPlayerLayer;
-    public static Player player;
-    public static GameObject playerGO;
+    public static GameHandler handlerInstance;
+    public static GameHandler Instance() {return handlerInstance; }
+    public PromptPlayerHit prompter;
+    public ScreamFollowObject screamFollowObject;
+    public RoomManager roomManager;
+    public LayerMask defaultPlayerLayer;
+    public Player player;
+    public GameObject playerGO;
 
-    public static FatherOrb fatherOrb;
+    public FatherOrb fatherOrb;
 
-    public static GameObject managerObject;
-    public static GameObject fatherOrbGO;
+    public GameObject managerObject;
+    public GameObject fatherOrbGO;
 
-    public static Monster monster;
-    public static GameObject monsterGO;
+    public Monster monster;
+    public GameObject monsterGO;
 
-    public static ProCamera2D proCamera;
+    public ProCamera2D proCamera;
 
-    public static Camera mainCamera;
+    public Camera mainCamera;
 
-    public static Transform fatherOrbHoldTransform;
+    public Transform fatherOrbHoldTransform;
 
-    public static Transform rightFacingFatherOrbTransform;
+    public Transform rightFacingFatherOrbTransform;
 
-    public static Transform leftFacingFatherOrbTransform;
+    public Transform leftFacingFatherOrbTransform;
 
-    public static OrbController orbController;
+    public OrbController orbController;
 
-    public static OrbEffects orbEffects;
-    public static Transform bubbleLineStartTransform;
+    public OrbEffects orbEffects;
+    public Transform bubbleLineStartTransform;
 
-    public static AudioSource screamSoundObjectSource;
+    public AudioSource screamSoundObjectSource;
 
-    public static Transform breathCanvas;
+    public Transform breathCanvas;
 
-    public static DialogueDisplayer dialogueDisplayer;    
+    public DialogueDisplayer dialogueDisplayer;    
 
-    public static CrossFade fader;
+    public CrossFade fader;
     void Awake()
     {
+        if(!handlerInstance){
+            handlerInstance = this;
+        }
         dialogueDisplayer = GameObject.Find("DialogueDisplayer").GetComponent<DialogueDisplayer>();
         screamSoundObjectSource = GameObject.Find("ScreamSound").GetComponent<AudioSource>();
         screamFollowObject = GameObject.Find("ScreamFollowObject").GetComponent<ScreamFollowObject>();
@@ -76,8 +82,39 @@ public class GameHandler : MonoBehaviour
         breathCanvas = playerGO.transform.Find("BreathCanvas");
         Monster.MonsterReachedPlayer += GameOver;
     }
+    void Start(){
+       dialogueDisplayer = GameObject.Find("DialogueDisplayer").GetComponent<DialogueDisplayer>();
+        screamSoundObjectSource = GameObject.Find("ScreamSound").GetComponent<AudioSource>();
+        screamFollowObject = GameObject.Find("ScreamFollowObject").GetComponent<ScreamFollowObject>();
 
-    public static void SwitchOrbHoldPositions(bool facingRight)
+        rightFacingFatherOrbTransform = GameObject.Find("RightFaceFatherOrbPos").transform;
+        leftFacingFatherOrbTransform = GameObject.Find("LeftFaceFatherOrbPos").transform;
+
+        fatherOrbHoldTransform = GameObject.Find("RightFaceFatherOrbPos").transform;
+
+        bubbleLineStartTransform = GameObject.Find("LineStartPosition").transform;
+        proCamera = Camera.main.GetComponent<ProCamera2D>();
+        mainCamera = Camera.main;
+        managerObject = GameObject.Find("Managers");
+       fader = managerObject.GetComponent<CrossFade>(); 
+        roomManager = GameObject.Find("Managers").GetComponent<RoomManager>();
+        playerGO = GameObject.Find("Player");
+        player = playerGO.GetComponent<Player>();
+       prompter = player.GetComponentInChildren<PromptPlayerHit>();
+        defaultPlayerLayer = playerGO.layer;
+        fatherOrbGO = GameObject.Find("FatherOrb");
+        fatherOrb = fatherOrbGO.GetComponent<FatherOrb>();
+        monsterGO = GameObject.Find("Monster");
+        orbController = fatherOrbGO.GetComponent<OrbController>();
+        orbEffects = fatherOrbGO.GetComponent<OrbEffects>();
+        if (monsterGO != null)
+        {
+            monster = monsterGO.GetComponent<Monster>();
+        }
+        breathCanvas = playerGO.transform.Find("BreathCanvas");
+        Monster.MonsterReachedPlayer += GameOver; 
+    }
+    public void SwitchOrbHoldPositions(bool facingRight)
     {
         if (facingRight == true)
         {
@@ -95,6 +132,15 @@ public class GameHandler : MonoBehaviour
     void GameOver()
     {
         Debug.Log("GAme over :O");
+    }
+
+    void Update(){
+        if(Input.GetMouseButtonDown(2)){
+            RestartScene();
+        }
+    }
+   void RestartScene(){
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 
 }

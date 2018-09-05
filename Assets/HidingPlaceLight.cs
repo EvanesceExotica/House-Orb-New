@@ -32,6 +32,11 @@ public class HidingPlaceLight : MonoBehaviour
         StartCoroutine(InitializeAdjacentRooms());
     }
 
+    void OnDisable(){
+         HidingSpace.PlayerHiding -= EnableCrackLight;
+        HidingSpace.PlayerNoLongerHiding -= DisableCrackLight;
+    }
+
     public IEnumerator InitializeAdjacentRooms()
     {
         yield return new WaitForSeconds(0.5f);

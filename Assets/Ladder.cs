@@ -23,7 +23,7 @@ public class Ladder : MonoBehaviour, iInteractable {
 
 	public void OnInteractWithMe(Player player){
 		
-		GameHandler.playerGO.transform.position = destinationPoint.position;
+		GameHandler.Instance().playerGO.transform.position = destinationPoint.position;
 
 	}
 

@@ -7,13 +7,13 @@ public static class ScaleAudio {
     {
         float ourAudioScale = 1.0f;
         float maxDistance = 0;
-        if (GameHandler.roomManager.numberOfRooms % 2 == 0)
+        if (GameHandler.Instance().roomManager.numberOfRooms % 2 == 0)
         {
-            maxDistance = GameHandler.roomManager.numberOfRooms / 2;
+            maxDistance = GameHandler.Instance().roomManager.numberOfRooms / 2;
         }
-        else if (GameHandler.roomManager.numberOfRooms % 2 != 0)
+        else if (GameHandler.Instance().roomManager.numberOfRooms % 2 != 0)
         {
-            maxDistance = (int)(GameHandler.roomManager.numberOfRooms / 2 + 0.5f);
+            maxDistance = (int)(GameHandler.Instance().roomManager.numberOfRooms / 2 + 0.5f);
         }
 
         if (distance == maxDistance)
