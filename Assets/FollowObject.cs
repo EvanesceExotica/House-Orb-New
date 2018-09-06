@@ -70,6 +70,10 @@ public class FollowObject : MonoBehaviour
 
     bool followingPlayer;
     public bool ignoreTimeScale;
+
+    private MaterialPropertyBlock block;
+    private Renderer ourRenderer;
+
     void SetObjectWereFollowing(Transform target)
     {
         following = true;
@@ -82,20 +86,35 @@ public class FollowObject : MonoBehaviour
     }
     IEnumerator FadeOutParticles()
     {
-
         float startTime = Time.time;
         float t = 0;
-        Color c = Color.clear;
+            Color whiteWithAlpha = Color.white;
+            whiteWithAlpha.a = 0;
+        // ParticleSystemRenderer pRenderer = ourParticles.GetComponent<ParticleSystemRenderer>();
+        //pRenderer.material.SetColor("_TintColor", c);
+        //Renderer ren = ourParticles.GetComponent<Renderer>();
+        //Material mat = ren.material;
+        //Debug.Log(mat.name);
+        // ParticleSystem
+
+        //mat.SetColor("_TintColor", Color.clear);
         while (Time.time < startTime + 0.5)
         {
-            Renderer ren = ourParticles.GetComponent<Renderer>();
-            Color newColor = Color.Lerp(ren.material.GetColor("_TintColor"), c, t);
-            t += Time.deltaTime/0.5f;
-            ourParticles.GetComponent<Renderer>().material.SetColor("_TintColor", newColor);
+            var trails = ourParticles.trails;
+            ourRenderer.GetPropertyBlock(block);
+            Color newColor = Color.Lerp(block.GetColor("_TintColor"), whiteWithAlpha, t);
+            trails.colorOverTrail = newColor;
+            block.SetColor("_TintColor", newColor);
+            ourRenderer.SetPropertyBlock(block);
+            t += Time.deltaTime / 0.5f;
             yield return null;
         }
-        // ParticleSystemRenderer pRenderer = ourParticles.GetComponent<ParticleSystemRenderer>();
-        //pRenderer.material.SetColor ("_TintColor", c);
+    }
+
+    void Start()
+    {
+        block = new MaterialPropertyBlock();
+        ourRenderer = ourParticles.GetComponent<Renderer>();
     }
     void StopFollowing()
     {

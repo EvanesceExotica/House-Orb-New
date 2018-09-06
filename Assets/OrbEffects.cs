@@ -51,6 +51,8 @@ public class OrbEffects : MonoBehaviour
     public AudioClip standardWoosh;
     public AudioClip panicWoosh;
 
+    public AudioClip repelWoosh;
+
     float wooshInterval = 1.0f;
     public ParticleSystems failureSystem;
     Light ourLight;
@@ -64,6 +66,8 @@ public class OrbEffects : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         ourLight = GetComponentInChildren<Light>();
+
+        PromptPlayerHit.PlayerParried += PlayParrySound;
         HiddenSconce.SconceRevealed += ReturnToStandardParticleEffect;
         ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer += ResetSystems;
         PromptPlayerHit.AutoRepelUsed += ReturnToStandardParticleEffect;
@@ -97,6 +101,7 @@ public class OrbEffects : MonoBehaviour
     }
 
     void OnDisable(){
+        PromptPlayerHit.PlayerParried -= PlayParrySound;
         HiddenSconce.SconceRevealed -= ReturnToStandardParticleEffect;
         ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= ResetSystems;
         PromptPlayerHit.AutoRepelUsed -= ReturnToStandardParticleEffect;
@@ -119,6 +124,10 @@ public class OrbEffects : MonoBehaviour
         CorruptedObject.Corrupting -= PlayCorruptionEffect;
         CorruptedObject.StoppedCorrupting -= StopCorruptionEffect;
 
+    }
+
+    void PlayParrySound(){
+        source.PlayOneShot(repelWoosh);
     }
     void CloseInOnOrb()
     {

@@ -141,14 +141,16 @@ public class OrbFire : MonoBehaviour
             orbLaunchLineRenderer.SetPosition(1, screenToWorldPoint);
             yield return null;
         }
-        orbLaunchLineRenderer.enabled = false;
-
+        transform.parent = null;
+      //  orbLaunchLineRenderer.enabled = false;
+        //TODO: Put the above back in
         Vector2 mousePos = Input.mousePosition;
         Vector2 mousePositionWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0));
 
         distance = Vector2.Distance(transform.position, mousePositionWorld);
         direction = (Vector2)((Vector2)transform.position - mousePositionWorld);
-
+        Debug.DrawRay(transform.position, direction, Color.cyan, 30.0f);
+        Debug.Break();
 
         float velocity = distance * Mathf.Sqrt(elasticity / soulRigidbody.mass);
         velocity *= (10); //multiply to cancel out low timescale

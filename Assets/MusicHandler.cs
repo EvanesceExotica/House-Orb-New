@@ -70,7 +70,7 @@ public class MusicHandler : MonoBehaviour
     }
 
     void StopScreamDrone(){
-        GameHandler.Instance().screamSoundObjectSource.Stop();
+       // GameHandler.Instance().screamSoundObjectSource.Stop();
     }
 
 	void SetChasedMood(){
@@ -85,8 +85,9 @@ public class MusicHandler : MonoBehaviour
     }
 
     void SetNormalMood(){
-        Debug.Log("Should be back to normal");
-        ChangeClip(Mood.Normal);
+        GameHandler.Instance().fader.Play(normalMusic);
+        //Debug.Log("Should be back to normal");
+       // ChangeClip(Mood.Normal);
     }
 
     // void SetNormalMood(){
