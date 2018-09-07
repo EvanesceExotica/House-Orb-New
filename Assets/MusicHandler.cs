@@ -64,9 +64,10 @@ public class MusicHandler : MonoBehaviour
     }
 
     void PlayScreamDrone(){
-        GameHandler.Instance().screamSoundObjectSource.clip = screamMusic;
-        GameHandler.Instance().screamSoundObjectSource.Play();
+        //GameHandler.Instance().screamSoundObjectSource.clip = screamMusic;
+       /// GameHandler.Instance().screamSoundObjectSource.Play();
         //musicSource.PlayOneShot(screamMusic);
+        GameHandler.Instance().fader.Play(screamMusic);
     }
 
     void StopScreamDrone(){

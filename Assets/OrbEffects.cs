@@ -98,9 +98,13 @@ public class OrbEffects : MonoBehaviour
 
         CorruptedObject.Corrupting += PlayCorruptionEffect;
         CorruptedObject.StoppedCorrupting += StopCorruptionEffect;
+
+        OrbFire.OrbPriming += HideCurrentEffect;
+        OrbFire.SoulNotLaunching += ReturnToCurrentEffect;
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         PromptPlayerHit.PlayerParried -= PlayParrySound;
         HiddenSconce.SconceRevealed -= ReturnToStandardParticleEffect;
         ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= ResetSystems;
@@ -119,14 +123,26 @@ public class OrbEffects : MonoBehaviour
         FatherOrb.Critical -= IncreaseToSuperPanicWoosh;
         //FatherOrb.Overheated += StopFizz;
         FatherOrb.OrbRefreshed -= StopFizz;
-        FatherOrb.Dropped -= StopFizz; 
-        
+        FatherOrb.Dropped -= StopFizz;
+
         CorruptedObject.Corrupting -= PlayCorruptionEffect;
         CorruptedObject.StoppedCorrupting -= StopCorruptionEffect;
 
+        OrbFire.OrbPriming -= HideCurrentEffect;
+        OrbFire.SoulNotLaunching -= ReturnToCurrentEffect;
     }
 
-    void PlayParrySound(){
+    void HideCurrentEffect()
+    {
+        mainCurrentPlayingSystem.Stop();
+    }
+    void ReturnToCurrentEffect()
+    {
+        mainCurrentPlayingSystem.Stop();
+    }
+
+    void PlayParrySound()
+    {
         source.PlayOneShot(repelWoosh);
     }
     void CloseInOnOrb()
@@ -195,12 +211,14 @@ public class OrbEffects : MonoBehaviour
         wooshInterval = 0.5f;
     }
 
-    void IncreaseToSuperPanicWoosh(){
+    void IncreaseToSuperPanicWoosh()
+    {
         wooshInterval = 0.25f;
     }
 
     bool canWoosh;
-    void StopWoosh(){
+    void StopWoosh()
+    {
         canWoosh = false;
 
     }

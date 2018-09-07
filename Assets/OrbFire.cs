@@ -110,6 +110,7 @@ public class OrbFire : MonoBehaviour
     public IEnumerator PrimeSlingshot()
     {
 
+        transform.parent = null;
         soulParticleSystems.Play();
         PrimingOrb();
         priming = true;
