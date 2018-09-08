@@ -188,6 +188,9 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         }
         CorruptedObject.Corrupting += BeCorrupted;
         CorruptedObject.StoppedCorrupting += SetCorruptionSourceRemoved;
+
+        OrbFire.OrbPriming += SetPriming;
+        OrbFire.DonePriming += SetNotPriming;
         //posOffset = transform.position;
         //SetInSconce(transform.parent.gameObject);
     }
@@ -202,6 +205,8 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         OrbController.ManuallyStoppedChannelingOrb -= PickedUpByPlayer;
         CorruptedObject.Corrupting -= BeCorrupted;
         CorruptedObject.StoppedCorrupting -= SetCorruptionSourceRemoved;
+        OrbFire.OrbPriming -= SetPriming;
+        OrbFire.DonePriming -= SetNotPriming;
     }
 
     bool beingCorrupted;
@@ -561,6 +566,16 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         // Set the sorting layer and order.
         renderer.sortingLayerName = sortingLayerName;
         renderer.sortingOrder = sortingOrder;
+    }
+     bool priming = false;
+    void SetPriming(){
+        priming = true;
+        
+    }
+
+    void SetNotPriming(){
+
+        priming = false;
     }
 
     void Update()
