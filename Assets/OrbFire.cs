@@ -150,14 +150,17 @@ public class OrbFire : MonoBehaviour
 
         distance = Vector2.Distance(transform.position, mousePositionWorld);
         direction = (Vector2)((Vector2)transform.position - mousePositionWorld);
-        Debug.DrawRay(transform.position, direction, Color.cyan, 30.0f);
-        Debug.Break();
+       // Debug.DrawRay(transform.position, direction, Color.cyan, 30.0f);
+        //Debug.Break();
 
         float velocity = distance * Mathf.Sqrt(elasticity / soulRigidbody.mass);
-        velocity *= (10); //multiply to cancel out low timescale
+        //velocity *= (10); //multiply to cancel out low timescale
         soulRigidbody.isKinematic = false;
+        //soulRigidbody.mass = 0.0001f;
+        Debug.DrawRay(transform.position, direction.normalized * velocity, Color.magenta, 30.0f);
+        Debug.Break();
         soulRigidbody.velocity = (direction.normalized * velocity);
-
+        Debug.Log("RB velocity " + soulRigidbody.velocity + " vs " +  (direction.normalized * velocity));
         //Debug.Log(pReference.rb.velocity);
         priming = false;
         //want the collider on now so it can impact with the ui collider
@@ -182,7 +185,7 @@ public class OrbFire : MonoBehaviour
     {
         //coundown from the time that was launched to see if the launched orb hits something while this is happening
         float startTime = Time.time;
-        while (Time.time < startTime + 0.5f)
+        while (Time.time < startTime + 1f)
         {
             if (soulHit)
             {

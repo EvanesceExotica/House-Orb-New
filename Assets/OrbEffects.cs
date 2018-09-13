@@ -67,6 +67,8 @@ public class OrbEffects : MonoBehaviour
         source = GetComponent<AudioSource>();
         ourLight = GetComponentInChildren<Light>();
 
+        mainCurrentPlayingSystem = baseParticleSystem;
+
         PromptPlayerHit.PlayerParried += PlayParrySound;
         HiddenSconce.SconceRevealed += ReturnToStandardParticleEffect;
         ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer += ResetSystems;
@@ -99,7 +101,7 @@ public class OrbEffects : MonoBehaviour
         CorruptedObject.Corrupting += PlayCorruptionEffect;
         CorruptedObject.StoppedCorrupting += StopCorruptionEffect;
 
-        OrbFire.OrbPriming += HideCurrentEffect;
+        StarScream.ScreamHitRoomAdjacent += HideCurrentEffect;
         OrbFire.SoulNotLaunching += ReturnToCurrentEffect;
     }
 
@@ -128,7 +130,7 @@ public class OrbEffects : MonoBehaviour
         CorruptedObject.Corrupting -= PlayCorruptionEffect;
         CorruptedObject.StoppedCorrupting -= StopCorruptionEffect;
 
-        OrbFire.OrbPriming -= HideCurrentEffect;
+        StarScream.ScreamHitRoomAdjacent -= HideCurrentEffect;
         OrbFire.SoulNotLaunching -= ReturnToCurrentEffect;
     }
 

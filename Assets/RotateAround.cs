@@ -110,7 +110,6 @@ public class RotateAround : MonoBehaviour
 
     public IEnumerator RotateSoulsIn()
     {
-        orbFire.SetActive(false);
         foreach (TrailRenderer tr in trailRenderers)
         {
             tr.time = 0f;
@@ -132,6 +131,7 @@ public class RotateAround : MonoBehaviour
             particles.Stop();
         }
 
+        orbFire.SetActive(false);
     }
 
     void ChangeSoulColor(MonoBehaviour something)
@@ -159,17 +159,7 @@ public class RotateAround : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C)){
-            ChangeSoulColor(this);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            RotateSoulsOutWrapper();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            RotateSoulsInWrapper();
-        }
+       
         transform.Rotate(0, 0, -50 * Time.deltaTime); //rotates 50 degrees per second around z axis
 
     }
