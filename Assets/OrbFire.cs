@@ -158,8 +158,11 @@ public class OrbFire : MonoBehaviour
         soulRigidbody.isKinematic = false;
         //soulRigidbody.mass = 0.0001f;
         Debug.DrawRay(transform.position, direction.normalized * velocity, Color.magenta, 30.0f);
+        Debug.Log(direction.normalized * velocity);
         Debug.Break();
         soulRigidbody.velocity = (direction.normalized * velocity);
+
+        Debug.Log(soulRigidbody.velocity);
         //Debug.Log(pReference.rb.velocity);
         priming = false;
         //want the collider on now so it can impact with the ui collider
@@ -231,7 +234,9 @@ public class OrbFire : MonoBehaviour
         soulParticleSystems.Stop();
     }
 
-
+    void OnCollisionEnter2D(Collision2D hit){
+        Debug.Log("The launched orb collided with " + hit.collider.gameObject.name);
+    }
     void ReturnToPlayer()
     {
         // ourProCamera2D.RemoveCameraTarget(darkStar.transform);

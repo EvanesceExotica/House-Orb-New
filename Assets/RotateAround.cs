@@ -14,11 +14,10 @@ public class RotateAround : MonoBehaviour
     [SerializeField] List<Soul> souls = new List<Soul>();
     List<TrailRenderer> trailRenderers = new List<TrailRenderer>();
 
-    GameObject orbFire;
+    public GameObject orbFire;
     void Awake()
     {
         //StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
-        orbFire = transform.parent.Find("LaunchedOrb").gameObject; 
         StarScream.ScreamHitRoomAdjacent += RotateSoulsOutWrapper;
         //Room.RoomWithPlayerHit += this.ChangeSoulColor;
         FatherOrb.Dropped += this.RotateSoulsInWrapper;
@@ -140,6 +139,7 @@ public class RotateAround : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, lights.Count);
         Soul chosenSoul = lights[randomIndex].GetComponent<Soul>();
         chosenSoul.Chosen();
+        orbFire.transform.position = GameHandler.Instance().fatherOrbGO.transform.position;
         orbFire.SetActive(true);
 
     }
