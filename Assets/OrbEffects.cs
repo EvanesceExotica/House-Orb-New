@@ -140,7 +140,7 @@ public class OrbEffects : MonoBehaviour
     }
     void ReturnToCurrentEffect()
     {
-        mainCurrentPlayingSystem.Stop();
+        mainCurrentPlayingSystem.Play();
     }
 
     void PlayParrySound()
@@ -288,7 +288,7 @@ public class OrbEffects : MonoBehaviour
     void PlayCorruptionEffect()
     {
         baseParticleSystem.Stop();
-        if (failureSystem != null)
+        if (failureSystem != null && failureSystem.isActiveAndEnabled == true)
         {
             failureSystem.SetLoop(true);
             failureSystem.Play();
@@ -297,7 +297,7 @@ public class OrbEffects : MonoBehaviour
 
     void StopCorruptionEffect()
     {
-        if (failureSystem != null)
+        if (failureSystem != null && failureSystem.isActiveAndEnabled == true)
         {
             failureSystem.SetLoop(false);
             failureSystem.Stop();

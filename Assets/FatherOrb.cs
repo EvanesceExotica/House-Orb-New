@@ -263,6 +263,7 @@ public class FatherOrb : MonoBehaviour//, iInteractable
             {
                 if (buildUpStopped)
                 {
+                    //if we started being corrupted again
                     Debug.Log("Started being corrupted again");
                     GameHandler.Instance().orbEffects.PlayCorruptionSound(corruptionMeter);
                     buildUpStopped = false;

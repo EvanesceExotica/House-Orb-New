@@ -15,16 +15,20 @@ public class RotateAround : MonoBehaviour
     List<TrailRenderer> trailRenderers = new List<TrailRenderer>();
 
     public GameObject orbFire;
+
+    bool autoRepelActivated;
     void Awake()
     {
         //StarScream.ScreamHitPlayerCurrentRoom += ChangeSoulColor;
+        Memory.AutoReflectGiven += SetAutoRepelActivatedFlag;
+        PromptPlayerHit.AutoRepelUsed += ResetAutoRepelActivatedFlag;
         StarScream.ScreamHitRoomAdjacent += RotateSoulsOutWrapper;
         //Room.RoomWithPlayerHit += this.ChangeSoulColor;
         FatherOrb.Dropped += this.RotateSoulsInWrapper;
         OrbFire.WrongOrNoSoulChosen += DisperseSouls;
         OrbFire.CorrectSoulChosen += DisperseSouls;
         PromptPlayerHit.ScreamPrompted += ChangeSoulColor;
-       // AutoRepel.AutoRepelTriggered += AutoRepelActivated;
+        // AutoRepel.AutoRepelTriggered += AutoRepelActivated;
         foreach (Transform child in transform)
         {
             if (child.tag == "Location")
@@ -52,13 +56,26 @@ public class RotateAround : MonoBehaviour
 
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
+        Memory.AutoReflectGiven -= SetAutoRepelActivatedFlag;
+        PromptPlayerHit.AutoRepelUsed -= ResetAutoRepelActivatedFlag;
         StarScream.ScreamHitRoomAdjacent -= RotateSoulsOutWrapper;
         FatherOrb.Dropped -= this.RotateSoulsInWrapper;
         OrbFire.WrongOrNoSoulChosen -= DisperseSouls;
         OrbFire.CorrectSoulChosen -= DisperseSouls;
         PromptPlayerHit.ScreamPrompted -= ChangeSoulColor;
 
+    }
+
+    void SetAutoRepelActivatedFlag()
+    {
+        autoRepelActivated = true;
+    }
+
+    void ResetAutoRepelActivatedFlag()
+    {
+        autoRepelActivated = false;
     }
     void Start()
     {
@@ -67,12 +84,19 @@ public class RotateAround : MonoBehaviour
 
     void RotateSoulsOutWrapper()
     {
-        StartCoroutine(RotateSoulsOut());
+        if (!autoRepelActivated)
+        {
+            StartCoroutine(RotateSoulsOut());
+        }
     }
 
     void RotateSoulsOutWrapper(MonoBehaviour mono)
     {
-        StartCoroutine(RotateSoulsOut());
+        if (!autoRepelActivated)
+        {
+            StartCoroutine(RotateSoulsOut());
+        }
+
     }
 
     void RotateSoulsInWrapper()
@@ -80,13 +104,15 @@ public class RotateAround : MonoBehaviour
         StartCoroutine(RotateSoulsIn());
     }
 
-    void RotateSoulsInWrapper(MonoBehaviour mono){
+    void RotateSoulsInWrapper(MonoBehaviour mono)
+    {
         StartCoroutine(RotateSoulsIn());
     }
 
     public IEnumerator RotateSoulsOut()
     {
-        foreach(Soul soul in souls){
+        foreach (Soul soul in souls)
+        {
             soul.PlayDefaultParticleSystem();
         }
         foreach (TrailRenderer tr in trailRenderers)
@@ -144,22 +170,26 @@ public class RotateAround : MonoBehaviour
 
     }
 
-    void DisperseSouls(){
+    void DisperseSouls()
+    {
         Debug.Log("Soul being dispersed");
-        foreach(Soul soul in souls){
-            if(soul.chosen == false){
+        foreach (Soul soul in souls)
+        {
+            if (soul.chosen == false)
+            {
                 soul.StopNormalParticleSystem();
-                
+
             }
         }
-        foreach(TrailRenderer trenderer in trailRenderers){
+        foreach (TrailRenderer trenderer in trailRenderers)
+        {
             trenderer.time = 0;
         }
     }
     // Update is called once per frame
     void Update()
     {
-       
+
         transform.Rotate(0, 0, -50 * Time.deltaTime); //rotates 50 degrees per second around z axis
 
     }

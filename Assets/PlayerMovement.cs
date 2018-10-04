@@ -52,7 +52,8 @@ public class PlayerMovement : MonoBehaviour
         FatherOrb.Dropped += SetNOTHoldingOrbAnimation;
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         OrbController.ChannelingOrb -= SetCantMove;
         //make this a 
         OrbController.ManuallyStoppedChannelingOrb -= SetYesCanMove;
@@ -75,11 +76,13 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void SetHoldingOrbAnimation(MonoBehaviour behavior){
+    void SetHoldingOrbAnimation(MonoBehaviour behavior)
+    {
         playerAnimator.SetBool("OrbHeld", true);
     }
 
-    void SetNOTHoldingOrbAnimation(MonoBehaviour behavior){
+    void SetNOTHoldingOrbAnimation(MonoBehaviour behavior)
+    {
         playerAnimator.SetBool("OrbHeld", false);
     }
 
@@ -143,8 +146,12 @@ public class PlayerMovement : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
 
-        playerAnimator.SetFloat("HorizontalMove", Mathf.Abs(h));
-        if( h > 0 || h < 0){
+        if (!cantMove)
+        {
+            playerAnimator.SetFloat("HorizontalMove", Mathf.Abs(h));
+        }
+        if (h > 0 || h < 0)
+        {
             //playerAnimator.SetFloat("HorizontalMove", h);
         }
         Vector2 currentVelocity = rb.velocity;
@@ -186,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
         facingRight = !facingRight;
         GameHandler.Instance().SwitchOrbHoldPositions(facingRight);
         GameHandler.Instance().fatherOrb.HandleFlip();
-        
+
     }
 
     public void ChangeSpeed(float value)

@@ -4,10 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: PreviewMaterial
-  m_Shader: {fileID: 4800000, guid: 2a174b5723ce69c42b1035e839e75ec7, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8add62ce050209449b790ac04cfe65a9, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -87,7 +87,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_1:
-        m_Texture: {fileID: 2800000, guid: b4157e70b0d7c6b45b0c3fdad8a13652, type: 3}
+        m_Texture: {fileID: 2800000, guid: da7fbd6a7e048f340aa3ea2503c3ea58, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NewTex_2:
@@ -174,20 +174,23 @@ Material:
     - AnimatedZoomUV_AnimatedZoomUV_PosY_1: 0.5
     - AnimatedZoomUV_AnimatedZoomUV_Speed_1: 0.8078744
     - AnimatedZoomUV_AnimatedZoomUV_Zoom_1: 1
-    - DistortionUV_DistanceX_1: 0.25831956
+    - DistortionUV_DistanceX_1: 0.3
     - DistortionUV_DistanceX_2: 1
-    - DistortionUV_DistanceY_1: 0.44678086
+    - DistortionUV_DistanceY_1: 0.3
     - DistortionUV_DistanceY_2: 1
-    - DistortionUV_Speed_1: 0.54608
+    - DistortionUV_Speed_1: 0.33135986
     - DistortionUV_Speed_2: 1
-    - DistortionUV_WaveX_1: 4.3469553
+    - DistortionUV_WaveX_1: 10.971429
     - DistortionUV_WaveX_2: 16.653345
-    - DistortionUV_WaveY_1: 8.941807
+    - DistortionUV_WaveY_1: 10
     - DistortionUV_WaveY_2: 17.802032
     - FishEyeUV_Size_1: 0
-    - KaleidoscopeUV_Number_1: 2.3084624
-    - KaleidoscopeUV_PosX_1: 0.5
-    - KaleidoscopeUV_PosY_1: 0.5
+    - KaleidoscopeUV_Number_1: 0.8628566
+    - KaleidoscopeUV_Number_2: 0.8628566
+    - KaleidoscopeUV_PosX_1: 0.039927453
+    - KaleidoscopeUV_PosX_2: 0.039927453
+    - KaleidoscopeUV_PosY_1: -0.1
+    - KaleidoscopeUV_PosY_2: -0.1
     - OffsetUV_X_1: -0.123077
     - OffsetUV_Y_1: -0.42307174
     - OffsetUV_ZoomX_1: 1.3807697
@@ -215,14 +218,14 @@ Material:
     - SpriteSheetFrameUV_SizeY_2: 10
     - SpriteSheetFrameUV_Size_1: 4
     - SpriteSheetFrameUV_Size_2: 4
-    - TwistUV_TwistUV_Bend_1: 0
-    - TwistUV_TwistUV_Bend_2: -1
+    - TwistUV_TwistUV_Bend_1: 0.36572266
+    - TwistUV_TwistUV_Bend_2: 0.20567562
     - TwistUV_TwistUV_PosX_1: 0.5
     - TwistUV_TwistUV_PosX_2: 0.5
     - TwistUV_TwistUV_PosY_1: 0.5
-    - TwistUV_TwistUV_PosY_2: 0.7179495
+    - TwistUV_TwistUV_PosY_2: 0.5
     - TwistUV_TwistUV_Radius_1: 0.5
-    - TwistUV_TwistUV_Radius_2: 0.5121561
+    - TwistUV_TwistUV_Radius_2: 0.5
     - ZoomUV_PosX_1: 0.5
     - ZoomUV_PosY_1: 0.5
     - ZoomUV_Zoom_1: 0.5239452
@@ -236,15 +239,17 @@ Material:
     - _Blur_Intensity_2: 1
     - _BumpScale: 1
     - _Burn_Speed_1: 0.5
-    - _Burn_Value_1: 0.34615973
-    - _CircleFade_Dist_1: 0.26473883
+    - _Burn_Value_1: 0
+    - _CircleFade_Dist_1: 0.2
     - _CircleFade_Dist_2: 0.2
-    - _CircleFade_PosX_1: 0.5
+    - _CircleFade_PosX_1: 0.52984095
     - _CircleFade_PosX_2: 0.5
-    - _CircleFade_PosY_1: 1.2384479
+    - _CircleFade_PosY_1: 0.5
     - _CircleFade_PosY_2: 0.5
-    - _CircleFade_Size_1: 0.97563213
-    - _CircleFade_Size_2: 0.3
+    - _CircleFade_Size_1: 0.3170288
+    - _CircleFade_Size_2: 1
+    - _ColorFilters_Fade_1: 0
+    - _ColorFilters_Fade_2: 0
     - _ColorGradients_Fade_: 0
     - _ColorGradients_Fade_1: 1
     - _ColorGradients_Fade_2: 1
@@ -278,7 +283,7 @@ Material:
     - _Displacement_Plus_ValueY_12: 0
     - _Displacement_Plus_ValueY_13: 0
     - _Displacement_Plus_ValueY_14: 0
-    - _Displacement_Value_1: -0.5384693
+    - _Displacement_Value_1: 0.05
     - _DstBlend: 0
     - _Emboss_Angle_1: 0.37947983
     - _Emboss_Distance_1: 1.4492359
@@ -287,6 +292,16 @@ Material:
     - _Emboss_original_1: 0
     - _EnableExternalAlpha: 0
     - _FadeToAlpha_Fade_1: 1
+    - _GenerateLightning_Number_1: 4
+    - _GenerateLightning_Number_2: 4
+    - _GenerateLightning_PosX_1: 0.5
+    - _GenerateLightning_PosX_2: 0.5
+    - _GenerateLightning_PosY_1: 0.5
+    - _GenerateLightning_PosY_2: 0.5
+    - _GenerateLightning_Size_1: 4
+    - _GenerateLightning_Size_2: 4
+    - _GenerateLightning_Speed_1: 0.2685756
+    - _GenerateLightning_Speed_2: 0.2685756
     - _Generate_Checker_PosX_1: 0
     - _Generate_Checker_PosY_1: 0
     - _Generate_Checker_Size_1: 8
@@ -319,15 +334,15 @@ Material:
     - _Generate_Donut_Size_3: 0
     - _Generate_Donut_Size_4: 0
     - _Generate_Donut_Size_5: 0
-    - _Generate_Fire_PosX_1: 0.20039837
+    - _Generate_Fire_PosX_1: 0
     - _Generate_Fire_PosX_3: 0.11153824
-    - _Generate_Fire_PosY_1: 0.8299883
+    - _Generate_Fire_PosY_1: 0
     - _Generate_Fire_PosY_3: 0
-    - _Generate_Fire_Precision_1: 0.026284045
+    - _Generate_Fire_Precision_1: 0.05
     - _Generate_Fire_Precision_3: 0.05
-    - _Generate_Fire_Smooth_1: 0.48872218
+    - _Generate_Fire_Smooth_1: 0.5
     - _Generate_Fire_Smooth_3: 0.34999946
-    - _Generate_Fire_Speed_1: 0.27076292
+    - _Generate_Fire_Speed_1: 1
     - _Generate_Fire_Speed_3: 1
     - _Generate_Line_Size_1: 4
     - _Generate_Line_Size_2: 0.5
@@ -724,19 +739,19 @@ Material:
     - _Generate_Voronoi_Size_235: 20.841547
     - _Generate_Voronoi_Size_236: 20.841547
     - _Generate_Voronoi_Size_237: 20.841547
-    - _Generate_Voronoi_Size_24: 14.441105
+    - _Generate_Voronoi_Size_24: 8
     - _Generate_Voronoi_Size_25: 14.441105
     - _Generate_Voronoi_Size_26: 14.441105
-    - _Generate_Voronoi_Size_27: 14.441105
+    - _Generate_Voronoi_Size_27: 8
     - _Generate_Voronoi_Size_28: 14.441105
-    - _Generate_Voronoi_Size_29: 14.441105
+    - _Generate_Voronoi_Size_29: 8
     - _Generate_Voronoi_Size_3: 8
     - _Generate_Voronoi_Size_30: 14.441105
-    - _Generate_Voronoi_Size_31: 14.441105
+    - _Generate_Voronoi_Size_31: 19.702847
     - _Generate_Voronoi_Size_32: 14.441105
-    - _Generate_Voronoi_Size_33: 14.441105
+    - _Generate_Voronoi_Size_33: 19.702847
     - _Generate_Voronoi_Size_34: 14.441105
-    - _Generate_Voronoi_Size_35: 14.441105
+    - _Generate_Voronoi_Size_35: 19.702847
     - _Generate_Voronoi_Size_36: 14.441105
     - _Generate_Voronoi_Size_37: 14.441105
     - _Generate_Voronoi_Size_38: 14.441105
@@ -846,7 +861,7 @@ Material:
     - _GhostFX_ClipDown_1: 0.7
     - _GhostFX_ClipLeft_1: 0.7
     - _GhostFX_ClipRight_1: 0.7
-    - _GhostFX_ClipUp_1: 0.7
+    - _GhostFX_ClipUp_1: 0.7081082
     - _GhostFX_Smooth_1: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -878,9 +893,9 @@ Material:
     - _Make3DFX_PosY_2: -0.09743948
     - _Make3DFX_Size_1: 8
     - _Make3DFX_Size_2: 8.512886
-    - _Mask2RGBA_Fade_1: 0
+    - _Mask2RGBA_Fade_1: 1
     - _MaskChannel_Fade_1: 1
-    - _MaskRGBA_Fade_1: 0
+    - _MaskRGBA_Fade_1: 0.45428598
     - _MaskRGBA_Fade_2: 0
     - _Metallic: 0
     - _Mode: 0
@@ -900,9 +915,11 @@ Material:
     - _PatternMovement_PosY_2: -0.09230707
     - _PatternMovement_Speed_1: 0.7433456
     - _PatternMovement_Speed_2: 0.97949064
-    - _PlasmaFX_Fade_1: 1
+    - _PlasmaFX_Fade_1: 0.5
+    - _PlasmaFX_Fade_2: 0.5
     - _PlasmaFX_Offset_1: 0.5
-    - _PlasmaFX_Speed_1: 0.7769232
+    - _PlasmaFX_Speed_1: 0.5
+    - _PlasmaFX_Speed_2: 0.5
     - _PlasmaLightFX_BW_1: 0.6512913
     - _PlasmaLightFX_Fade_1: 0.48462185
     - _PlasmaLightFX_Speed_1: 0

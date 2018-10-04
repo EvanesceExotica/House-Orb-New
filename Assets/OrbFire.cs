@@ -106,6 +106,7 @@ public class OrbFire : MonoBehaviour
         soulParticleSystems = GetComponentInChildren<ParticleSystems>();
         ourCollider = GetComponent<Collider2D>();
         ourCollider.enabled = false;
+        soulHolder = GameHandler.Instance().fatherOrbGO.transform.Find("RotatingObject").Find("SoulHolder").gameObject;
     }
     public IEnumerator PrimeSlingshot()
     {
@@ -183,17 +184,27 @@ public class OrbFire : MonoBehaviour
         NotLaunchingSoul();
         gameObject.SetActive(false);
     }
+
+    public GameObject soulHolder;
     IEnumerator CountdownFromLaunch()
     {
         //coundown from the time that was launched to see if the launched orb hits something while this is happening
         float startTime = Time.time;
+        float distanceFromCenter = 0;
         while (Time.time < startTime + 1f)
         {
+            distanceFromCenter = Vector2.Distance(GameHandler.Instance().fatherOrbGO.transform.position, this.transform.position) ;
             if (soulHit)
             {
                 soulHit = false;
+                Debug.Log("We hit a soul");
                 ResetTimeAndSetLaunchToFalse();
                 //if the soul is hit, reset things -- the actions are taken care of in the "DetermineWhichSoulWasHit" method
+                yield break;
+            }
+            if(distanceFromCenter > Vector2.Distance(soulHolder.transform.position, GameHandler.Instance().fatherOrbGO.transform.position) + 1){
+                //if the distance from the center of the father orb is greater than the distance from one one of the rotating outer orbs to the center, reset
+                ResetTimeAndSetLaunchToFalse();
                 yield break;
             }
             yield return null;
