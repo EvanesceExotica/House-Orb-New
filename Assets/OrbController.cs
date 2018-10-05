@@ -45,12 +45,16 @@ public class OrbController : MonoBehaviour
     FatherOrb orb;
     float speed = 5.0f;
 
+    Transform shakingTransform;
     void Awake()
     {
+        shakingTransform = transform.Find("ObjectThatCanBeShook");
         FatherOrb.PickedUp += SetCanBeChanneled;
         FatherOrb.Dropped += SetCanNOTBeChanneled;
         Sconce.OrbInSconce += SetCanNOTBeChanneled;
         HiddenSconce.SconceRevealed += StopOrbBeingChanneled;
+        CorruptedObject.Corrupting += BeCorrupted;
+        CorruptedObject.StoppedCorrupting += StopBeingCorrupted;
         orb = GetComponent<FatherOrb>();
         orbRigidBody = GetComponent<Rigidbody2D>();
 
@@ -61,6 +65,8 @@ public class OrbController : MonoBehaviour
         FatherOrb.Dropped -= SetCanNOTBeChanneled;
         Sconce.OrbInSconce -= SetCanNOTBeChanneled;
         HiddenSconce.SconceRevealed -= StopOrbBeingChanneled;
+        CorruptedObject.Corrupting -= BeCorrupted;
+        CorruptedObject.StoppedCorrupting -= StopBeingCorrupted;
 
     }
 
@@ -172,10 +178,38 @@ public class OrbController : MonoBehaviour
             {
                 movement = new Vector2(-moveHorizontal, moveVertical);
             }
+            if(movement.x == 0 && movement.y == 0){
+
+            }
+            if((movement.x != 0 || movement.y != 0) && beingCorrupted){
+                StopVibrating();
+                //beingMoved = true;
+            }
             orbRigidBody.velocity = movement * speed;
         }
 
+    } 
+
+    bool beingCorrupted;
+
+    void BeCorrupted(){
+        beingCorrupted = true;
     }
+
+    void StopBeingCorrupted(){
+
+        beingCorrupted = false;
+    }
+    
+    void Vibrate(){
+        transform.DOShakePosition(100f, 0.1f, 3, 90, false, true);
+    }
+
+    void StopVibrating(){
+        DOTween.Kill(transform);
+    }
+
+    bool beingMoved;
 
     void ReturnToPlayer()
     {

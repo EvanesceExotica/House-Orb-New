@@ -273,15 +273,15 @@ public class OrbEffects : MonoBehaviour
 
     void Shake()
     {
-        transform.DOShakePosition(1.0f, 0.5f, 3, 90, false, true);
+        GameHandler.Instance().orbShakeObject.DOShakePosition(1.0f, 0.5f, 3, 90, false, true);
     }
 
     void Vibrate(){
-        transform.DOShakePosition(100f, 0.1f, 3, 90, false, true);
+        GameHandler.Instance().orbShakeObject.DOShakePosition(100f, 0.1f, 3, 90, false, true);
     }
 
     void StopVibrating(){
-        DOTween.Kill(transform);
+        DOTween.Kill(GameHandler.Instance().orbShakeObject);
     }
 
     public void ResetCorruptionSound()
@@ -307,7 +307,9 @@ public class OrbEffects : MonoBehaviour
 
     public void StopCorruptionSound()
     {
-        source.Stop();
+        Debug.Log("Corruption whine should stop");
+        corruptionSource.Stop();
+
     }
     void PlayCorruptionEffect()
     {

@@ -17,6 +17,8 @@ public class CorruptedObject : ParentTrigger
 
     MaterialPropertyBlock childBlock;
     SpriteRenderer childRenderer;
+
+    float initialColliderRadius;
     void Awake()
     {
         //TODO: Add distortion effect around edges
@@ -36,6 +38,7 @@ public class CorruptedObject : ParentTrigger
         // corruptionEffectGrower = GetComponentInChildren<GrowCorruptionEffect>();
         corruptionEffect = transform.GetChild(0);
         ourCollider = GetComponentInChildren<CircleCollider2D>();
+        initialColliderRadius = ourCollider.radius;
         //       ourVisibleCollider = GetComponentInChildren<VisibleCollider>();
         //        ourVisibleCollider.OurColliderType = VisibleCollider.ColliderTypes.Circle;
         OrbController.ChannelingOrb += SetCanGrowCorruption;
@@ -167,16 +170,16 @@ public class CorruptedObject : ParentTrigger
             if (orbInSconce || GameHandler.Instance().fatherOrb.coolingDownFromCorruption)
             {
                 //the orb being in the sconce should drastically reduce the uncorruption time
-                childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 15.0f));
+                childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 30.0f));
                 ///  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 15.0f));
                 // ourCollider.radius = Mathf.Lerp(ourCollider.bounds.extents.x, 3.0f, elapsedTime / 15.0f);
-                ourCollider.radius = Mathf.Lerp(_radius, 3.0f, elapsedTime / 15.0f);
+                ourCollider.radius = Mathf.Lerp(_radius, initialColliderRadius, elapsedTime / 30.0f);
             }
             else
             {
-                childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 20.0f));
+                childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 40.0f));
                 //  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 20.0f));
-                ourCollider.radius = Mathf.Lerp(_radius, 3.0f, elapsedTime / 20.0f);
+                ourCollider.radius = Mathf.Lerp(_radius, initialColliderRadius, elapsedTime / 40.0f);
 
             }
             childRenderer.SetPropertyBlock(childBlock);

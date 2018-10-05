@@ -46,6 +46,8 @@ public class GameHandler : MonoBehaviour
     public DialogueDisplayer dialogueDisplayer;    
 
     public CrossFade fader;
+
+    public Transform orbShakeObject;
     void Awake()
     {
         if(!handlerInstance){
@@ -71,6 +73,7 @@ public class GameHandler : MonoBehaviour
        prompter = player.GetComponentInChildren<PromptPlayerHit>();
         defaultPlayerLayer = playerGO.layer;
         fatherOrbGO = GameObject.Find("FatherOrb");
+        orbShakeObject = fatherOrbGO.transform.GetChild(0);
         fatherOrb = fatherOrbGO.GetComponent<FatherOrb>();
         monsterGO = GameObject.Find("Monster");
         orbController = fatherOrbGO.GetComponent<OrbController>();

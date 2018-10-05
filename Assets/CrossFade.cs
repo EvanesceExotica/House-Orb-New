@@ -70,7 +70,7 @@ public class CrossFade : MonoBehaviour
     /// </summary>
     /// <param name="clip">AudioClip to fade-in</param>
     public void Play(AudioClip clip)
-    { 
+    {
         //Prevent fading the same clip on both players 
         if (clip == _player[ActivePlayer].clip)
         {
@@ -131,5 +131,34 @@ public class CrossFade : MonoBehaviour
         {
             finishedCallback();
         }
+    }
+
+    IEnumerator MuffleAudioSource(AudioSource player, float duration, float targetVolume)
+    {
+        //Calculate the steps
+        int Steps = (int)(volumeChangesPerSecond * duration);
+        float StepTime = duration / Steps;
+        float StepSize = (targetVolume - player.volume) / Steps;
+
+        //Fade now
+        for (int i = 1; i < Steps; i++)
+        {
+            player.volume += StepSize;
+            yield return new WaitForSeconds(StepTime);
+        }
+        //Make sure the targetVolume is set
+        player.volume = targetVolume;
+
+        //Callback
+    }
+    public void TemporaryFadeOut()
+    {
+        StartCoroutine(MuffleAudioSource(_player[ActivePlayer], 0.5f, volume * 0.5f));
+    }
+
+    public void TemporaryFadeIn()
+    {
+        StartCoroutine(MuffleAudioSource(_player[ActivePlayer], 1.0f, volume * 2));
+
     }
 }

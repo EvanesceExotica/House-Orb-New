@@ -37,8 +37,11 @@ public class MusicHandler : MonoBehaviour
         OrbController.SconceRevealedStoppedChannelingOrb += SetNormalMood;
         OrbController.ManuallyStoppedChannelingOrb += SetNormalMood;
 
+        CorruptedObject.Corrupting += MuffleVolume;
+        CorruptedObject.StoppedCorrupting += ReturnVolumeToNormal;
 
     }
+
 
     void OnDisable(){
 
@@ -55,6 +58,9 @@ public class MusicHandler : MonoBehaviour
         //TODO: Test that the scream isn't happening before setting back to normal for example
         OrbController.SconceRevealedStoppedChannelingOrb -= SetNormalMood;
         OrbController.ManuallyStoppedChannelingOrb -= SetNormalMood;
+
+        CorruptedObject.Corrupting -= MuffleVolume;
+        CorruptedObject.StoppedCorrupting -= ReturnVolumeToNormal;
     }
 
     void SetChannelingMusic(MonoBehaviour mono){
@@ -70,6 +76,16 @@ public class MusicHandler : MonoBehaviour
         GameHandler.Instance().fader.Play(screamMusic);
     }
 
+    void MuffleVolume(){
+
+        GameHandler.Instance().fader.TemporaryFadeOut();
+
+    }
+
+    void ReturnVolumeToNormal(){
+
+        GameHandler.Instance().fader.TemporaryFadeIn();
+    }
     void StopScreamDrone(){
        // GameHandler.Instance().screamSoundObjectSource.Stop();
     }
