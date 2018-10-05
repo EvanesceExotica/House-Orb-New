@@ -11,7 +11,11 @@ public class OrbEffects : MonoBehaviour
     //TODO: Add light changer
     List<ParticleSystems> parryParticles = new List<ParticleSystems>();
     AudioSource source;
+
+    AudioSource corruptionSource;
     public AudioClip corruptionSound;
+
+    public AudioClip ShriekClip; 
     public AudioClip failClip;
 
     public AudioClip succeedClip;
@@ -64,7 +68,9 @@ public class OrbEffects : MonoBehaviour
     bool burnedOut;
     void Awake()
     {
-        source = GetComponent<AudioSource>();
+        var sources = GetComponents<AudioSource>();
+        source = sources[0];
+        corruptionSource = sources[1];
         ourLight = GetComponentInChildren<Light>();
 
         mainCurrentPlayingSystem = baseParticleSystem;
@@ -81,6 +87,8 @@ public class OrbEffects : MonoBehaviour
 
         //PromptPlayerHit.PlayerParried += Parry;
         PromptPlayerHit.AutoRepelUsed += Parry;
+
+        FatherOrb.OrbScream += ShriekFromCorruption;
 
         FatherOrb.Fizzing += StartFizz;
         FatherOrb.RedHot += IncreaseFizzTempo;
@@ -107,6 +115,7 @@ public class OrbEffects : MonoBehaviour
 
     void OnDisable()
     {
+        FatherOrb.OrbScream -= ShriekFromCorruption;
         PromptPlayerHit.PlayerParried -= PlayParrySound;
         HiddenSconce.SconceRevealed -= ReturnToStandardParticleEffect;
         ReturnPlayerToLastSconce.ArrivedAtLastSconceWithPlayer -= ResetSystems;
@@ -134,6 +143,12 @@ public class OrbEffects : MonoBehaviour
         OrbFire.SoulNotLaunching -= ReturnToCurrentEffect;
     }
 
+    void ShriekFromCorruption(){
+        corruptionSource.Stop();
+       corruptionSource.clip = ShriekClip;
+        corruptionSource.Play();
+      //  source.PlayOneShot(ShriekClip);
+    }
     void HideCurrentEffect()
     {
         mainCurrentPlayingSystem.Stop();
@@ -261,19 +276,28 @@ public class OrbEffects : MonoBehaviour
         transform.DOShakePosition(1.0f, 0.5f, 3, 90, false, true);
     }
 
+    void Vibrate(){
+        transform.DOShakePosition(100f, 0.1f, 3, 90, false, true);
+    }
+
+    void StopVibrating(){
+        DOTween.Kill(transform);
+    }
+
     public void ResetCorruptionSound()
     {
-        source.clip = null;
-        source.pitch = 1.0f;
-        source.volume = 0.2f;
+        corruptionSource.clip = null;
+        corruptionSource.pitch = 1.0f;
+        corruptionSource.volume = 0.2f;
     }
 
     public void PlayCorruptionSound(float corruptionLevel)
     {
-        source.clip = corruptionSound;
-        source.time = corruptionLevel;
-        Debug.Log(source.time);
-        source.Play();
+
+        corruptionSource.clip = corruptionSound;
+        corruptionSource.time = corruptionLevel;
+        corruptionSource.volume = 1.0f;
+        corruptionSource.Play();
         //source.volume = 0.5f;
         //source.pitch = corruptionLevel/maxCorruption;
         //source.volume = corruptionLevel/maxCorruption;
@@ -287,6 +311,7 @@ public class OrbEffects : MonoBehaviour
     }
     void PlayCorruptionEffect()
     {
+        Vibrate();
         baseParticleSystem.Stop();
         if (failureSystem != null && failureSystem.isActiveAndEnabled == true)
         {
@@ -297,6 +322,7 @@ public class OrbEffects : MonoBehaviour
 
     void StopCorruptionEffect()
     {
+        StopVibrating();
         if (failureSystem != null && failureSystem.isActiveAndEnabled == true)
         {
             failureSystem.SetLoop(false);

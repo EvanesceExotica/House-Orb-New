@@ -6,8 +6,8 @@ using DG.Tweening;
 using UnityEngine.UI;
 public class HidingSpace : MonoBehaviour, iInteractable
 {
- 
- #region 
+
+    #region 
     CanvasGroup upCanvasGroup;
 
     Image upBar;
@@ -47,19 +47,20 @@ public class HidingSpace : MonoBehaviour, iInteractable
 
     SpriteRenderer spriteRenderer;
     GenerateNewBounds boundsGenerator;
-#endregion
+    #endregion
     public static event Action BreathedTooLoud;
 
     GameObject ourInteriorBackgroundSprite;
-    void ScaleInteriorBackground(){
+    void ScaleInteriorBackground()
+    {
 
-       // Vector3 newVector = Vector3.zero;
+        // Vector3 newVector = Vector3.zero;
         //newVector.x = spriteRenderer.bounds.size.x / ourInteriorBackgroundSprite.transform.localScale.x;
         //newVector.y = spriteRenderer.bounds.size.y / ourInteriorBackgroundSprite.transform.localScale.y;
-       // Debug.Log(spriteRenderer.bounds.size);
-//        ourInteriorBackgroundSprite.transform.localScale = spriteRenderer.bounds.size/3; 
+        // Debug.Log(spriteRenderer.bounds.size);
+        //        ourInteriorBackgroundSprite.transform.localScale = spriteRenderer.bounds.size/3; 
         //ourInteriorBackgroundSprite.GetComponent<SpriteRenderer>().bounds.extents.x = newVector;
-        
+
     }
     public void BreathedTooLoudWrapper()
     {
@@ -70,8 +71,8 @@ public class HidingSpace : MonoBehaviour, iInteractable
     }
     void Awake()
     {
-//        ourInteriorBackgroundSprite = GetComponentsInChildren<SpriteRenderer>()[1].gameObject; 
-audioSource = GetComponent<AudioSource>();
+        //        ourInteriorBackgroundSprite = GetComponentsInChildren<SpriteRenderer>()[1].gameObject; 
+        audioSource = GetComponent<AudioSource>();
         upCanvasGroup = GameHandler.Instance().breathCanvas.Find("Up").GetComponent<CanvasGroup>();
         downCanvasGroup = GameHandler.Instance().breathCanvas.Find("Down").GetComponent<CanvasGroup>();
         upBar = upCanvasGroup.GetComponentsInChildren<Image>()[0];
@@ -91,12 +92,15 @@ audioSource = GetComponent<AudioSource>();
 
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         RemoveParentRoomDependencies();
     }
 
-    void RemoveParentRoomDependencies(){
-        if(parentRoom != null){
+    void RemoveParentRoomDependencies()
+    {
+        if (parentRoom != null)
+        {
 
             parentRoom.EnemyEnteredAdjacentRoom -= HyperventilationHandlerWrapper;
             parentRoom.EnemyExitedAdjacentRoom -= StopHyperventilating;
@@ -131,7 +135,10 @@ audioSource = GetComponent<AudioSource>();
     void HyperventilationHandlerWrapper(Room room)
     {
         enemyNearby = true;
-        StartCoroutine(HyperventilationHandler());
+        if (alreadyHiding)
+        {
+            StartCoroutine(HyperventilationHandler());
+        }
     }
     public IEnumerator HyperventilationHandler()
     {
@@ -202,13 +209,14 @@ audioSource = GetComponent<AudioSource>();
         }
     }
 
-public enum PlayerStatus{
+    public enum PlayerStatus
+    {
         NotHidingHere,
         HidingInThisPlace
 
     }
 
-public PlayerStatus thisHidingPlaceStatus;
+    public PlayerStatus thisHidingPlaceStatus;
 
 
     KeyCode GrabKeyCodes()
@@ -274,7 +282,8 @@ public PlayerStatus thisHidingPlaceStatus;
             Debug.Log("Now we're hyperventilating worse");
             hyperventilationStrike++;
         }
-        else{
+        else
+        {
             Debug.Log("Successfuly calmed down for now");
         }
     }

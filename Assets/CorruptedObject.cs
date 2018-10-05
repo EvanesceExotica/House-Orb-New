@@ -114,7 +114,7 @@ public class CorruptedObject : ParentTrigger
             }
             //newVector = new Vector2(corruptionEffect.localScale.x + 0.2f, corruptionEffect.localScale.y + 0.2f);
             //Debug.Log("We should be growing to New vector: "  + newVector);
-           // currentSize1 = childBlock.GetFloat("_CircleFade_Size_1");
+            // currentSize1 = childBlock.GetFloat("_CircleFade_Size_1");
             //currentSize2 = childBlock.GetFloat("_CircleFade_Size_2");
             childRenderer.GetPropertyBlock(childBlock);
             childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(initialSize1, 1.0f, elapsedTime / 20.0f));
@@ -148,8 +148,9 @@ public class CorruptedObject : ParentTrigger
     {
         Vector2 newVector = Vector2.zero;
         float currentSize1 = childBlock.GetFloat("_CircleFade_Size_1");
-       // float currentSize2 = childBlock.GetFloat("_CircleFade_Size_2");
+        // float currentSize2 = childBlock.GetFloat("_CircleFade_Size_2");
         float elapsedTime = 0;
+        float _radius = ourCollider.radius;
         while (currentSize1 > -0.15f)
         {
 
@@ -158,7 +159,7 @@ public class CorruptedObject : ParentTrigger
                 break;
             }
             currentSize1 = childBlock.GetFloat("_CircleFade_Size_1");
-         //   currentSize2 = childBlock.GetFloat("_CircleFade_Size_2");
+            //   currentSize2 = childBlock.GetFloat("_CircleFade_Size_2");
             childRenderer.GetPropertyBlock(childBlock);
             childRenderer.SetPropertyBlock(childBlock);
             //newVector = new Vector2(corruptionEffect.localScale.x - 0.2f, corruptionEffect.localScale.y - 0.2f);
@@ -167,14 +168,15 @@ public class CorruptedObject : ParentTrigger
             {
                 //the orb being in the sconce should drastically reduce the uncorruption time
                 childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 15.0f));
-              ///  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 15.0f));
-                ourCollider.radius = Mathf.Lerp(ourCollider.bounds.extents.x, 3.0f, elapsedTime / 15.0f);
+                ///  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 15.0f));
+                // ourCollider.radius = Mathf.Lerp(ourCollider.bounds.extents.x, 3.0f, elapsedTime / 15.0f);
+                ourCollider.radius = Mathf.Lerp(_radius, 3.0f, elapsedTime / 15.0f);
             }
             else
             {
                 childBlock.SetFloat("_CircleFade_Size_1", Mathf.Lerp(currentSize1, 0f, elapsedTime / 20.0f));
-              //  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 20.0f));
-                ourCollider.radius = Mathf.Lerp(ourCollider.bounds.extents.x, 3.0f, elapsedTime / 20.0f);
+                //  childBlock.SetFloat("_CircleFade_Size_2", Mathf.Lerp(currentSize2, 0f, elapsedTime / 20.0f));
+                ourCollider.radius = Mathf.Lerp(_radius, 3.0f, elapsedTime / 20.0f);
 
             }
             childRenderer.SetPropertyBlock(childBlock);
