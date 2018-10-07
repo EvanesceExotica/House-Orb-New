@@ -20,7 +20,7 @@ public partial class TerrainTracker : AssetPostprocessor {
 
 				if (terrains.Length > 0) {
 					Ferr2DT_PathTerrain[] sceneTerrains = null;
-					if (PrefabUtility.GetPrefabParent(Selection.activeGameObject) == o)
+					if (PrefabUtility.GetCorrespondingObjectFromSource(Selection.activeGameObject) == o)
 						sceneTerrains = Selection.activeGameObject.GetComponentsInChildren<Ferr2DT_PathTerrain>();
 					
 					if (sceneTerrains != null) {

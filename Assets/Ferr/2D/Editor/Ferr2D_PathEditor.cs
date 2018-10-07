@@ -176,7 +176,7 @@ public class Ferr2D_PathEditor : Editor {
 
 		// update everything that relies on this path, if the GUI changed
 		if (GUI.changed) {
-			if (PrefabUtility.GetPrefabParent(target) != null) {
+			if (PrefabUtility.GetCorrespondingObjectFromSource(target) != null) {
 				NudgeArray(pathVerts);
 				serializedObject.ApplyModifiedProperties();
 			}
@@ -209,7 +209,7 @@ public class Ferr2D_PathEditor : Editor {
 		EditorGUILayout.PropertyField(closed);
 		EditorGUI.BeginChangeCheck();
 		EditorGUILayout.PropertyField(pathVerts, true);
-		if (EditorGUI.EndChangeCheck() && PrefabUtility.GetPrefabParent(target) != null) {
+		if (EditorGUI.EndChangeCheck() && PrefabUtility.GetCorrespondingObjectFromSource(target) != null) {
 			NudgeArray(pathVerts);
 		}
 
