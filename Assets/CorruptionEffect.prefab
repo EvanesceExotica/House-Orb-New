@@ -8,20 +8,22 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1907967402617720}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1907967402617720
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4316242890838096}
   - component: {fileID: 212142468697803456}
   - component: {fileID: 58008050435124564}
   - component: {fileID: 114081232224818572}
+  - component: {fileID: 114735256788805918}
+  - component: {fileID: 114390666837031424}
   m_Layer: 0
   m_Name: CorruptionEffect
   m_TagString: Untagged
@@ -32,7 +34,7 @@ GameObject:
 --- !u!4 &4316242890838096
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907967402617720}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -45,7 +47,7 @@ Transform:
 --- !u!58 &58008050435124564
 CircleCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907967402617720}
   m_Enabled: 1
@@ -60,7 +62,7 @@ CircleCollider2D:
 --- !u!114 &114081232224818572
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907967402617720}
   m_Enabled: 1
@@ -68,10 +70,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56659071b58b07e48902a4d37573791a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114390666837031424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1907967402617720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 112998890, guid: 325c5b2a7434372429c2ca9d61dba58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: edb14027-1b98-4801-86a4-59fdff5e83fa
+--- !u!114 &114735256788805918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1907967402617720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -605777808, guid: 325c5b2a7434372429c2ca9d61dba58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guid: 
+  _referenceCollection:
+    _collection:
+    - {fileID: 1907967402617720}
+  _assetGuid: 79eae2a9a9605a840a9c9846835960f4
 --- !u!212 &212142468697803456
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907967402617720}
   m_Enabled: 1
@@ -113,3 +143,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
