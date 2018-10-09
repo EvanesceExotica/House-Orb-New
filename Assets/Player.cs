@@ -213,6 +213,10 @@ public class Player : MonoBehaviour {
 	void FadeOffPlayerLight(MonoBehaviour mono){
 		playerLight.DOIntensity(0, 1.0f);
 	}
+
+	public void PauseMe(){
+
+	}
 	void Awake(){
 		playerLight = GetComponentInChildren<Light>();
 		defaultLightIntensity = playerLight.intensity;

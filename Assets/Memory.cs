@@ -102,7 +102,8 @@ public class Memory : MonoBehaviour, iInteractable
         //if it's a visual memory there's an actual hint
         //TODO: put this back in
         //        StartMemoryVisual();
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
+        Time.timeScale = 0.0001f;
         yield return new WaitForSecondsRealtime(5.0f);
         Time.timeScale = 1;
     }
@@ -176,7 +177,7 @@ public class Memory : MonoBehaviour, iInteractable
         {
             yield return null;
         }
-        Time.timeScale = 0;
+        Time.timeScale = 0.0001f;
         LookingAtMemoryWrapper();
     }
 
