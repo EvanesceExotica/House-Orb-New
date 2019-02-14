@@ -12,18 +12,21 @@ public class MemoryStartedEventHandler : EventHandler {
 
 
 	void Awake(){
-		Memory.LookingAtMemory += MemoryStarted;
+		//Memory.LookingAtMemory += MemoryStarted;
 	}
 
 	void OnDisable(){
-		Memory.LookingAtMemory -= MemoryStarted;
+		//Memory.LookingAtMemory -= MemoryStarted;
 
 	}
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
+
+	void FungusMemoryStarted(Block memoryBlock)	{
+		memoryBlock.Execute();
+	}
 	void MemoryStarted(MonoBehaviour memoryObject){
 		ExecuteBlock();
 	}

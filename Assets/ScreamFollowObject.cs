@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using DG;
 using System;
-public class ScreamFollowObject : MonoBehaviour
+public class ScreamFollowObject : MonoBehaviour, IPausable
 {
 
     public static event Action<Transform> ScreamObjectMoving;
@@ -22,6 +22,16 @@ public class ScreamFollowObject : MonoBehaviour
     }
     // Use this for initialization
     SpriteRenderer spriteRenderer;
+
+    bool paused;
+    public void PauseMe(){
+        paused = true;
+    }
+
+    public void UnpauseMe(){
+        paused = false;
+
+    }
     IEnumerator MoveScreamObject(Room room, int direction, float duration)
     {
         Debug.Log("We have started to move the screamObject");
@@ -37,8 +47,11 @@ public class ScreamFollowObject : MonoBehaviour
             destination = room.entranceA;
         }
 
-        while (Time.time < startTime + duration)
+        while (elapsedTime < duration)
         {
+            while(paused){
+                yield return null;
+            }
             if ((room = GameHandler.Instance().roomManager.GetPlayerCurrentRoom()))
             {
                 if (Vector2.Distance(GameHandler.Instance().playerGO.transform.position, transform.position) <= 1.0f)

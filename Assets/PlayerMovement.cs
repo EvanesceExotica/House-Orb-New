@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPausable
 {
 
     Transform animationTransform;
@@ -21,7 +21,16 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] bool cantMove = false;
 
+    bool paused;
+    public void PauseMe(){
+        paused = true;
+        cantMove = true;
+    }
 
+    public void UnpauseMe(){
+        paused = false;
+        cantMove = false;
+    }
     SpriteRenderer spriteRenderer;
     // Use this for initialization
     void Awake()

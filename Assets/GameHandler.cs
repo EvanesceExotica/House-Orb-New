@@ -4,11 +4,12 @@ using UnityEngine;
 using Com.LuisPedroFonseca.ProCamera2D;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Linq;
 public class GameHandler : MonoBehaviour
 {
 
     public static GameHandler handlerInstance;
-    public static GameHandler Instance() {return handlerInstance; }
+    public static GameHandler Instance() { return handlerInstance; }
     public PromptPlayerHit prompter;
     public ScreamFollowObject screamFollowObject;
     public RoomManager roomManager;
@@ -43,16 +44,34 @@ public class GameHandler : MonoBehaviour
 
     public Transform breathCanvas;
 
-    public DialogueDisplayer dialogueDisplayer;    
+    public DialogueDisplayer dialogueDisplayer;
 
     public CrossFade fader;
 
     public Transform orbShakeObject;
+
+    public List<IPausable> pausableObjects = new List<IPausable>();
+
+    public Camera CutsceneCamera;
+    public CanvasGroup FadeToBlackGroup;
     void Awake()
     {
-        if(!handlerInstance){
+        if (!handlerInstance)
+        {
             handlerInstance = this;
         }
+        var pausables = FindObjectsOfType<MonoBehaviour>().OfType<IPausable>();
+        foreach(IPausable p in pausables){
+            pausableObjects.Add(p);
+        }
+        var cameras = Resources.FindObjectsOfTypeAll<Camera>();
+        foreach (Camera camera in cameras){
+            if(camera.gameObject.name == "Cutscene Camera"){
+                CutsceneCamera = camera;
+                break;
+            }
+        }
+        FadeToBlackGroup = GameObject.Find("DialogueCanvas").GetComponent<CanvasGroup>();
         dialogueDisplayer = GameObject.Find("DialogueDisplayer").GetComponent<DialogueDisplayer>();
         screamSoundObjectSource = GameObject.Find("ScreamSound").GetComponent<AudioSource>();
         screamFollowObject = GameObject.Find("ScreamFollowObject").GetComponent<ScreamFollowObject>();
@@ -66,11 +85,11 @@ public class GameHandler : MonoBehaviour
         proCamera = Camera.main.GetComponent<ProCamera2D>();
         mainCamera = Camera.main;
         managerObject = GameObject.Find("Managers");
-       fader = managerObject.GetComponent<CrossFade>(); 
+        fader = managerObject.GetComponent<CrossFade>();
         roomManager = GameObject.Find("Managers").GetComponent<RoomManager>();
         playerGO = GameObject.Find("Player");
         player = playerGO.GetComponent<Player>();
-       prompter = player.GetComponentInChildren<PromptPlayerHit>();
+        prompter = player.GetComponentInChildren<PromptPlayerHit>();
         defaultPlayerLayer = playerGO.layer;
         fatherOrbGO = GameObject.Find("FatherOrb");
         orbShakeObject = fatherOrbGO.transform.GetChild(0);
@@ -85,8 +104,9 @@ public class GameHandler : MonoBehaviour
         breathCanvas = playerGO.transform.Find("BreathCanvas");
         Monster.MonsterReachedPlayer += GameOver;
     }
-    void Start(){
-       dialogueDisplayer = GameObject.Find("DialogueDisplayer").GetComponent<DialogueDisplayer>();
+    void Start()
+    {
+        dialogueDisplayer = GameObject.Find("DialogueDisplayer").GetComponent<DialogueDisplayer>();
         screamSoundObjectSource = GameObject.Find("ScreamSound").GetComponent<AudioSource>();
         screamFollowObject = GameObject.Find("ScreamFollowObject").GetComponent<ScreamFollowObject>();
 
@@ -99,11 +119,11 @@ public class GameHandler : MonoBehaviour
         proCamera = Camera.main.GetComponent<ProCamera2D>();
         mainCamera = Camera.main;
         managerObject = GameObject.Find("Managers");
-       fader = managerObject.GetComponent<CrossFade>(); 
+        fader = managerObject.GetComponent<CrossFade>();
         roomManager = GameObject.Find("Managers").GetComponent<RoomManager>();
         playerGO = GameObject.Find("Player");
         player = playerGO.GetComponent<Player>();
-       prompter = player.GetComponentInChildren<PromptPlayerHit>();
+        prompter = player.GetComponentInChildren<PromptPlayerHit>();
         defaultPlayerLayer = playerGO.layer;
         fatherOrbGO = GameObject.Find("FatherOrb");
         fatherOrb = fatherOrbGO.GetComponent<FatherOrb>();
@@ -115,7 +135,7 @@ public class GameHandler : MonoBehaviour
             monster = monsterGO.GetComponent<Monster>();
         }
         breathCanvas = playerGO.transform.Find("BreathCanvas");
-        Monster.MonsterReachedPlayer += GameOver; 
+        Monster.MonsterReachedPlayer += GameOver;
     }
     public void SwitchOrbHoldPositions(bool facingRight)
     {
@@ -137,12 +157,45 @@ public class GameHandler : MonoBehaviour
         Debug.Log("GAme over :O");
     }
 
-    void Update(){
-        if(Input.GetMouseButtonDown(2)){
-            RestartScene();
+    bool gameplayPaused;
+    public void PauseGameplay()
+    {
+        //This shouldn't pause everything, just "gameplay". Doesn't pause cinematics.
+        foreach (IPausable pausableObject in pausableObjects)
+        {
+            pausableObject.PauseMe();
+        }
+        gameplayPaused = true;
+    }
+
+    public void UnpauseGameplay()
+    {
+        foreach (IPausable pausableObject in pausableObjects)
+        {
+            pausableObject.UnpauseMe();
+        }
+        gameplayPaused = false;
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            //RestartScene();
+            if (!gameplayPaused)
+            {
+                PauseGameplay();
+
+            }
+            else
+            {
+                UnpauseGameplay();
+            }
+
         }
     }
-   void RestartScene(){
+    void RestartScene()
+    {
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
     }
 

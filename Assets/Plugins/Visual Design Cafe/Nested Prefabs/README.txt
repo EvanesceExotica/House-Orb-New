@@ -1,6 +1,6 @@
-Thank you for trying Nested Prefabs.
+Thank you for purchasing Nested Prefabs.
 
-Nested Prefabs should automatically install in your project after importing the package.
+Nested Prefabs should automatically be installed in your project after importing the package.
 If for some reason the install fails, please reimport all the prefabs and models in the project manually. 
 This is necessary because Nested Prefabs has to analyse any existing prefabs and/or models to prepare them for being nested.
 
@@ -17,4 +17,3 @@ Nested Prefabs will automatically check for updates and send bug reports to help
 To change this behavior you can edit the preferences in the 'Plugins/Visual Design Cafe/Nested Prefabs/Editor/NestedPrefabsPreferences.cs' script.
 
 The source code for Nested Prefabs can be found on Bitbucket: https://bitbucket.org/VisualDesignCafe/nested-prefabs
-Please not that this source code can only be used with the paid version of Nested Prefabs which can be found here: https://www.assetstore.unity3d.com/#!/content/84495?aid=1011lK8Q

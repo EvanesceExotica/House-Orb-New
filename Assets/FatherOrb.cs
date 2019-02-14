@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DG.Tweening;
-public class FatherOrb : MonoBehaviour//, iInteractable
+public class FatherOrb : MonoBehaviour, IPausable//, iInteractable
 {
 
     Transform FatherOrbPos;
@@ -19,6 +19,14 @@ public class FatherOrb : MonoBehaviour//, iInteractable
     float durationBeforeCritical;
     public static event Action<MonoBehaviour> MovingBetweenPlayerAndObject;
 
+    bool paused;
+    public void PauseMe(){
+        paused = true;
+    }
+
+    public void UnpauseMe(){
+        paused = false;
+    }
     void MovingBetweenPlayerAndObjectWrapper(MonoBehaviour mono)
     {
         if (MovingBetweenPlayerAndObject != null)
@@ -233,6 +241,9 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         bool buildUpStopped = false;
         while (corruptionMeter <= maxCorruption && corruptionMeter >= 0)
         {
+            while(paused){
+                yield return null;
+            }
             //this should only end if the corruption meter has had time to return to zero, or hits max 
             if (!beingCorrupted)
             {
@@ -424,7 +435,9 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         {
             FloatMe();
             
-
+            while(paused){
+                yield return null;
+            }
             if (timeRefreshed)
             {
                 //if something triggered the time to refresh, like the "memory" that has this function
@@ -518,6 +531,9 @@ public class FatherOrb : MonoBehaviour//, iInteractable
         transform.parent = destinationObject.transform;
         while (Vector2.Distance(transform.position, destination) > 0.1f)
         {
+            while(paused){
+                yield return null;
+            }
             transform.position = Vector2.MoveTowards(transform.position, destination, 5 * Time.deltaTime);
             yield return null;
 

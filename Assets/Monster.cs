@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-public class Monster : MonoBehaviour
+public class Monster : MonoBehaviour, IPausable
 {
 
 
@@ -68,6 +68,15 @@ public class Monster : MonoBehaviour
         FatherOrb.OrbScream -= HurryToRoomOfScreamWrapper;
     }
     bool pause = false;
+
+    [SerializeField] bool paused;
+    public void PauseMe(){
+        paused = true;
+    }
+
+    public void UnpauseMe(){
+        paused = false;
+    }
     void PauseProgression(MonoBehaviour mono){
         pause = true;
     }
@@ -185,6 +194,9 @@ public class Monster : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         while (true)
         {
+            while(paused){
+                yield return null;
+            }
             if (hunting)
             {
                 //if a failed orb hit or the orb being heard screamingn somewhere, run to it and stop this
@@ -309,6 +321,9 @@ public class Monster : MonoBehaviour
         float startTime = Time.time;
         while (Time.time < startTime + hidingWaitDuration)
         {
+            while(paused){
+                yield return null;
+            }
             if (!playerHiding )
             {
                 detectedPlayer = true;
@@ -347,11 +362,15 @@ public class Monster : MonoBehaviour
     }
     public IEnumerator HurryToRoomOfScream()
     {
+        //this one is for ??? how is it different from the one below
         int screamSourceIndex = roomManager.GetPlayerCurrentRoomIndex();
         int currentRoomIndex = roomManager.GetEnemyCurrentRoomIndex();
         hunting = true;
         while (currentRoomIndex != screamSourceIndex)
         {
+            while(paused){
+                yield return null;
+            }
             //GO to the room the player is currently in until the player stops hiding and you eat them or the timer runs out
             Debug.Log(travelingDirection);
             currentRoomIndex = roomManager.GetEnemyCurrentRoomIndex() + travelingDirection;
@@ -386,11 +405,15 @@ public class Monster : MonoBehaviour
     }
     public IEnumerator HuntPlayer(/*int direction*/)
     {
+        //t6his one is for hunting the player if you hear their scream.
         int currentRoomIndex = roomManager.GetEnemyCurrentRoomIndex();
         int playerRoomIndex = roomManager.GetPlayerCurrentRoomIndex();
         hunting = true;
         while (currentRoomIndex != playerRoomIndex)
         {
+            while(paused){
+                yield return null;
+            }
             //GO to the room the player is currently in until the player stops hiding and you eat them or the timer runs out
             playerRoomIndex = roomManager.GetPlayerCurrentRoomIndex();
             currentRoomIndex = roomManager.GetEnemyCurrentRoomIndex() + starScreamDirection;

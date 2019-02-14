@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using DG.Tweening;
 
-public class OrbController : MonoBehaviour
+public class OrbController : MonoBehaviour, IPausable
 {
 
     public bool flipped;
@@ -37,7 +37,22 @@ public class OrbController : MonoBehaviour
         }
     }
 
+    bool cantMove;
 
+    public void PauseMe(){
+        SetCantMove();
+    }
+
+    public void UnpauseMe(){
+        SetCanMove();
+    }
+    void SetCantMove(){
+        cantMove = true;
+    }
+
+    void SetCanMove(){
+        cantMove = false;
+    }
     bool canChannelOrb = false;
     bool channelingOrb = false;
     // Use this for initialization
@@ -123,7 +138,7 @@ public class OrbController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (channelingOrb)
+        if (channelingOrb && !cantMove)
         {
             Debug.Log("Orb is being channeled now");
             float moveHorizontal = Input.GetAxis("Horizontal");

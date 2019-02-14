@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DG.Tweening;
-public class StarScream : MonoBehaviour
+public class StarScream : MonoBehaviour, IPausable
 {
 
     public static event Action ScreamBegun;
@@ -65,6 +65,14 @@ public class StarScream : MonoBehaviour
         Monster.ReadyToScream -= StartScreamWrapper;
     }
 
+    bool paused;
+    public void PauseMe(){
+        paused = true;
+    }
+
+    public void UnpauseMe(){
+        paused = false;
+    }
     void StartScreamWrapper()
     {
         StartCoroutine(StartScream());
@@ -94,6 +102,9 @@ public class StarScream : MonoBehaviour
         screaming = true;
         while (screaming)
         {
+            while(paused){
+                yield return null;
+            }
             GameHandler.Instance().screamFollowObject.MoveScreamObjectWrapper(roomList[currentRoomIndexOfScream], positiveOrNegative, 0.5f);
             //	Debug.Log("We're on room " + roomList[roomIndexOfScream].gameObject.name + " which has an index of " + roomIndexOfScream);
             if (currentRoomIndexOfScream == roomManager.GetPlayerCurrentRoomIndex())

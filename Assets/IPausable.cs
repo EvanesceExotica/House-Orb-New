@@ -7,5 +7,6 @@ public interface IPausable{
 
     void PauseMe();
 
+    void UnpauseMe();
     
 }

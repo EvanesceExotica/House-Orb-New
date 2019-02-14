@@ -34,7 +34,7 @@ public class Conversation : MonoBehaviour
     void Awake()
     {
 		blipSource = GetComponent<AudioSource>();
-        Memory.LookingAtMemory += FadeIn;
+      //  Memory.LookingAtMemory += FadeIn;
         // Memory.StoppedLookingAtMemory += FadeOut;
         FadeToBlackGroup = GetComponent<CanvasGroup>();
         memoryText = GetComponentInChildren<TextMeshProUGUI>();

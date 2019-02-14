@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using MirzaBeig.ParticleSystems;
 using DG.Tweening;
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IPausable {
 
 	Light playerLight;
 	public ParticleSystems blinded; //serum2	
@@ -124,7 +124,13 @@ public class Player : MonoBehaviour {
 		}
 
 		while(Time.time < startTime + duration){
-
+   			while(paused){
+                yield return null;
+            }
+			// if(paused){
+			// 	Debug.Log("PAused -- can't continue effect countdown");
+			// 	yield return null;
+			// }
 			yield return null;
 		}
 
@@ -214,8 +220,13 @@ public class Player : MonoBehaviour {
 		playerLight.DOIntensity(0, 1.0f);
 	}
 
+	bool paused;
 	public void PauseMe(){
+		paused = true;
 
+	}
+	public void UnpauseMe(){
+		paused = false;
 	}
 	void Awake(){
 		playerLight = GetComponentInChildren<Light>();

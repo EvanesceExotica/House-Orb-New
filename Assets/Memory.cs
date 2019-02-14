@@ -5,11 +5,14 @@ using System;
 using DG.Tweening;
 using System.Linq;
 using MirzaBeig.ParticleSystems;
+using Fungus;
 public class Memory : MonoBehaviour, iInteractable
 {
 
 
+    public Flowchart fungusFlowchartMemory;
 
+    //public Block memoryBlock;
     AudioClip music;
     public string promptString;
 
@@ -42,6 +45,9 @@ public class Memory : MonoBehaviour, iInteractable
 
     public static Action<MonoBehaviour> LookingAtMemory;
 
+    //public static Action<Block> FungusMemoryStarted;
+
+    //public static Action moryEnded;
     [SerializeField] bool canLookAtMemory = false;
     void SetCanLookAtMemory(MonoBehaviour mono)
     {
@@ -58,6 +64,9 @@ public class Memory : MonoBehaviour, iInteractable
         {
             LookingAtMemory(this);
         }
+        // if(FungusMemoryStarted != null){
+        //     FungusMemoryStarted(block);
+        // }
     }
 
     public void StoppedLookingAtMemoryWrapper()
@@ -140,7 +149,7 @@ public class Memory : MonoBehaviour, iInteractable
         OrbController.ChannelingOrb += SetCantLookAtMemory;
         FatherOrb.PickedUp += SetCanLookAtMemory;
         FatherOrb.Dropped += SetCantLookAtMemory;
-        Conversation.FinishedDisplayingMemory += ApplyMemoryEffectsWrapper;        
+        Conversation.FinishedDisplayingMemory += ApplyMemoryEffectsWrapper;
 
         ourLight = GetComponent<Light>();
         ourLight.intensity = 0;
@@ -155,11 +164,12 @@ public class Memory : MonoBehaviour, iInteractable
         //memoryCameras = GameObject.FindGameObjectsWithTag("MemoryCam").GetComponents<Camera>();
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         OrbController.ChannelingOrb -= SetCantLookAtMemory;
         FatherOrb.PickedUp -= SetCanLookAtMemory;
         FatherOrb.Dropped -= SetCantLookAtMemory;
-        Conversation.FinishedDisplayingMemory -= ApplyMemoryEffectsWrapper;        
+        Conversation.FinishedDisplayingMemory -= ApplyMemoryEffectsWrapper;
 
 
     }
@@ -171,23 +181,49 @@ public class Memory : MonoBehaviour, iInteractable
             StoppedHoveringOverMemoryObjectWrapper();
         }
     }
+    public void FadeIn()
+    {
+       // GameHandler.Instance().FadeToBlackGroup.DOFade(1.0f, 1.0f).SetUpdate(true);
+    }
 
-    public IEnumerator InitializeMemory(){
+    public void FadeOut(MonoBehaviour mono)
+    {
+
+        GameHandler.Instance().FadeToBlackGroup.DOFade(0, 2.0f).SetUpdate(true);
+    }
+    public void EnableCutsceneCamera()
+    {
+        GameHandler.Instance().CutsceneCamera.enabled = true;
+    }
+
+    public void DisableCutsceneCamera()
+    {
+        GameHandler.Instance().CutsceneCamera.enabled = false;
+    }
+    public IEnumerator InitializeMemory()
+    {
         while (Vector2.Distance(GameHandler.Instance().fatherOrbGO.transform.position, transform.position) > 0.1f)
         {
             yield return null;
         }
-        Time.timeScale = 0.0001f;
+        GameHandler.Instance().PauseGameplay();
+        //  GameHandler.Instance().CutsceneCamera.enabled = true;
+        //Time.timeScale = 0.0001f;
+        fungusFlowchartMemory.ExecuteBlock("Memory Started");
+        //   memoryBlock.Execute();
         LookingAtMemoryWrapper();
     }
 
-    public void ApplyMemoryEffectsWrapper(){
-        Time.timeScale = 1;
+    public void ApplyMemoryEffectsWrapper()
+    {
+        GameHandler.Instance().UnpauseGameplay();
+        //Time.timeScale = 1;
+        //  GameHandler.Instance().CutsceneCamera.enabled = false;
         StartCoroutine(ApplyMemoryEffects());
     }
     public IEnumerator ApplyMemoryEffects()
     {
-       
+
         if (RefreshGiven != null)
         {
             //have the time refresh be every time you see a memory since they're rare enough
